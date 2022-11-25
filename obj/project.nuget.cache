@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "4EBFzKxB05r3nd4YU9r7CypBvBfnkK/AsfPwS3orj0anGPJ1eELvmZzZEgyz2nAjIqwdGNZdamxnLioa2B9avQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\orbel\\Desktop\\BvrScheduleBoard\\BvrScheduleBoard.pcfproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\orbel\\.nuget\\packages\\microsoft.netframework.referenceassemblies\\1.0.0\\microsoft.netframework.referenceassemblies.1.0.0.nupkg.sha512",
+    "C:\\Users\\orbel\\.nuget\\packages\\microsoft.netframework.referenceassemblies.net462\\1.0.0\\microsoft.netframework.referenceassemblies.net462.1.0.0.nupkg.sha512",
+    "C:\\Users\\orbel\\.nuget\\packages\\microsoft.powerapps.msbuild.pcf\\1.19.4\\microsoft.powerapps.msbuild.pcf.1.19.4.nupkg.sha512"
+  ],
+  "logs": []
+}
