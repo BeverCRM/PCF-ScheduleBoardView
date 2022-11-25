@@ -1,2 +1,0 @@
-C:\Users\orbel\Desktop\BvrScheduleBoard\obj\Debug\BvrScheduleBoard.pcfproj.AssemblyReference.cache
-C:\Users\orbel\Desktop\BvrScheduleBoard\obj\Debug\BvrScheduleBoard.pcfproj.CoreCompileInputs.cache
