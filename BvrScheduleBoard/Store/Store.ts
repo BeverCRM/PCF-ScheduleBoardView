@@ -1,28 +1,43 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
-import {configureStore} from '@reduxjs/toolkit';
-import { IState, Record, UserAction, UserActionTypes } from './Types';
-
+import { configureStore, createSlice, getDefaultMiddleware, PayloadAction } from '@reduxjs/toolkit';
+import { IState } from './types';
+import { Record } from './types';
+import { setAutoFreeze } from 'immer';
+import { CalendarDate } from '../Utilities/dateUtilities';
 
 const defaultState: IState = {
-  records: new Array<Record>(),
-  selectedMonthRecords: new Array<Record>(),
-  recordFieldSchemaNames: { name: "", startDate: "", endDate: "" },
+  records: [],
+  selectedMonthRecords: new Array<Array<CalendarDate>>(),
+  recordFieldSchemaNames: { name: '', startDate: '', endDate: '' },
 };
 
+type schemaNames = { name: ''; startDate: ''; endDate: '' };
 
-const reducer = (state = defaultState, action: UserAction): IState => {
-  switch (action.type) {
-    case UserActionTypes.SetRecordFieldSchemaNamesAction:
-      console.log(action.payload);
-      return { records:state.records,selectedMonthRecords:state.selectedMonthRecords, recordFieldSchemaNames: action.payload };
-    case UserActionTypes.SetSelectedMonthRecordsAction:
-      return { ...state, selectedMonthRecords: action.payload };
-    case UserActionTypes.SetRecordsAction:
-      return { ...state, records: action.payload };
-    default:
-      return state;
-  }
-};
+export const boardReducer = createSlice({
+  name: 'Board',
+  initialState: defaultState,
+  reducers: {
+    setRecordFieldSchemaNames: (state, action: PayloadAction<schemaNames>) => {
+      state.recordFieldSchemaNames = action.payload;
+    },
+    setSelectedMonthRecords: (state, action: PayloadAction<Array<Array<CalendarDate>>>) => {
+      state.selectedMonthRecords = action.payload;
+    },
+    setRecords: (state, action: PayloadAction<Array<Record>>) => {
+      state.records = action.payload;
+    },
+  },
+});
 
+export const { setSelectedMonthRecords, setRecordFieldSchemaNames, setRecords } =
+boardReducer.actions;
 
-export const store = configureStore({reducer});
+export type AppDespatch = typeof store.dispatch;
+export type RootState = ReturnType <typeof store.getState>;
+
+setAutoFreeze(false);
+export const store = configureStore({
+  reducer: boardReducer.reducer,
+  middleware: getDefaultMiddleware({
+    serializableCheck: false,
+  }),
+});

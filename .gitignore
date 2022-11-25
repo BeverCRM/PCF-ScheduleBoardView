@@ -10,5 +10,11 @@
 /out
 
 # msbuild output directories
-/bin
-/obj
+**/bin
+**/obj
+
+# VS
+.vs
+
+# VS Code
+.vscode

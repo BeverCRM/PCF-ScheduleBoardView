@@ -1,20 +1,16 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import React = require("react");
-import { IInputs, IOutputs } from "./generated/ManifestTypes";
-import {
-  CalendarDate,
-  SheduleBoard,
-  SheduleBoradTime,
-} from "./Components/SheduleBoard";
-import { FetchRecordFieldSchemaNames, FetchRecords } from "./Store/Services";
+import * as React from 'react';
+import { IInputs, IOutputs } from './generated/ManifestTypes';
+import { fetchRecordFieldSchemaNames, fetchRecords } from './Store/services';
+import DataverseService from './Services/dataverseService';
+import { Wrapper } from './Components/AppWrapper';
+import { SheduleBoardTime } from './Components/sheduleBoard';
 
 export class BvrScheduleBoardViewControl
-  implements ComponentFramework.ReactControl<IInputs, IOutputs>
-{
+implements ComponentFramework.ReactControl<IInputs, IOutputs> {
   private Component: ComponentFramework.ReactControl<IInputs, IOutputs>;
   private notifyOutputChanged: () => void;
-  private updateViewAfterInit: boolean;
-  private recordFieldSchemaNames: Array<string>;
+  private recordFieldSchemaNames: Array<string | null>;
 
   constructor() {}
 
@@ -29,13 +25,18 @@ export class BvrScheduleBoardViewControl
   public init(
     context: ComponentFramework.Context<IInputs>,
     notifyOutputChanged: () => void,
-    state: ComponentFramework.Dictionary
   ): void {
-    this.updateViewAfterInit = true;
-    this.recordFieldSchemaNames = context.parameters.sampleDataSet.columns.map(
-      (item) => item.name
+    this.notifyOutputChanged = notifyOutputChanged;
+    this.recordFieldSchemaNames = context.parameters.DataSet.columns.map(
+      item => item.name,
     );
-    FetchRecordFieldSchemaNames(this.recordFieldSchemaNames);
+    this.recordFieldSchemaNames = [
+      context.parameters.name.raw,
+      context.parameters.startdate.raw,
+      context.parameters.enddate.raw,
+    ];
+    fetchRecordFieldSchemaNames(this.recordFieldSchemaNames);
+
   }
 
   /**
@@ -43,20 +44,23 @@ export class BvrScheduleBoardViewControl
    * @param context The entire property bag available to control via Context Object; It contains values as set up by the customizer mapped to names defined in the manifest, as well as utility functions
    */
   public updateView(
-    context: ComponentFramework.Context<IInputs>
+    context: ComponentFramework.Context<IInputs>,
   ): React.ReactElement {
-    const records = context.parameters.sampleDataSet.records;
-    FetchRecords(records);
+    DataverseService.setContext(context);
+    console.log(this.recordFieldSchemaNames);
+    const { records } = context.parameters.DataSet;
+    console.log(records);
+    fetchRecords(records);
 
-    const props: SheduleBoradTime = {
+    const props: SheduleBoardTime = {
       currentDate: new Date(),
-      calendarDays: new Array<Array<CalendarDate>>(),
-      onChange: function () {
-        Date();
-      },
+      calendarDays: [],
+      onChange: this.notifyOutputChanged,
     };
 
-    return React.createElement(SheduleBoard, props);
+    const element = React.createElement(Wrapper, props);
+    console.log(element);
+    return element;
   }
 
   /**

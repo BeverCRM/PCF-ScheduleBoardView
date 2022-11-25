@@ -1,62 +1,56 @@
-import { store } from "./Store";
-import { Record } from "./Types";
+import { randomColor } from '../Utilities/utilities';
+import { store, setRecords, setRecordFieldSchemaNames } from './store';
+import { Record } from './types';
 
-export function randomColor(): string {
-  const randomInt = (min: number, max: number): number => {
-    return (Math.random() * (max - min + 1) + min) << 0;
-  };
-
-  const H = randomInt(0, 360);
-  const S = randomInt(45, 65);
-  const L = randomInt(45, 65);
-
-  return `hsl(${H}, ${S}%, ${L}%)`;
-}
-
-export function FetchRecordFieldSchemaNames(inputSchemaNames: any) {
+export function fetchRecordFieldSchemaNames(inputSchemaNames: any) {
   const schemaNames = {
     name: inputSchemaNames[0],
     startDate: inputSchemaNames[1],
     endDate: inputSchemaNames[2],
   };
 
-  store.dispatch({ type: "setRecordFieldSchemaNames", payload: schemaNames });
+  store.dispatch(setRecordFieldSchemaNames(schemaNames));
 }
 
-export function FetchSelectedMonthRecords(inputDate: any) {
-  const data = new Array<Record>();
-  const records = store.getState().records;
-  records.forEach((item) => {
+export function fetchSelectedMonthRecords(inputDate: any) {
+  const data: Array<Record> = [];
+  const { records } = store.getState();
+  records.forEach(item => {
     if (
       (item.start < inputDate.start && item.end > inputDate.end) ||
       (item.start >= inputDate.start && item.start <= inputDate.end) ||
       (item.end >= inputDate.start && item.end <= inputDate.end)
-    )
+    ) {
       data.push(item);
+    }
   });
-
-  store.dispatch({ type: "setSelectedMonthRecords", payload: data });
+  return data;
+  // store.dispatch(setSelectedMonthRecords(data));
 }
 
-export function FetchRecords(inputRecords: any) {
-  const data = new Array<Record>();
+export function fetchRecords(inputRecords: any) {
+  // const dispatch = useAppDispatch();
+  const data:Array<Record> = [];
   const schemaNames = store.getState().recordFieldSchemaNames;
 
   for (const ID in inputRecords) {
-    //const record = inputRecords[ID]
+    const record = inputRecords[ID];
+    console.log('1');
     const item: Record = {
       id: ID,
-      name: schemaNames.name,
-      //start: new Date(record.getValue([schemaNames.startDate])),
-      //end: new Date(record.getValue([schemaNames.endDate])),
-      start: new Date(schemaNames.startDate),
-      end: new Date(schemaNames.endDate),
+      name: record.getValue([schemaNames.name]),
+      start: new Date(record.getValue([schemaNames.startDate])),
+      end: new Date(record.getValue([schemaNames.endDate])),
+      // start: new Date(schemaNames.startDate),
+      // end: new Date(schemaNames.endDate),
       color: randomColor(),
-      isUnreal: false,
+      index: -1,
+      isHovered: false,
     };
 
     data.push(item);
   }
-
-  store.dispatch({ type: "setSelectedMonthRecords", payload: data });
+  console.log(data);
+  // store.dispatch(boardReducer.actions.setRecords(data));
+  store.dispatch(setRecords(data));
 }

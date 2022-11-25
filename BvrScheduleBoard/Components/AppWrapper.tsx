@@ -1,13 +1,11 @@
-/* eslint-disable react/prop-types */
-import { Provider } from "react-redux"
-import { SheduleBoard,SheduleBoradTime } from "./SheduleBoard"
-import { store} from "../Store/Store"
-import React = require("react")
+import { Provider } from 'react-redux';
+import { SheduleBoard, SheduleBoardTime } from './sheduleBoard';
+import { store } from '../Store/store';
+import * as React from 'react';
 
+export const Wrapper = (props: SheduleBoardTime) =>
 
-export const Wrapper = (props: SheduleBoradTime) => {
- return(   
   <Provider store={store}>
-    <SheduleBoard onChange={props.onChange} currentDate={new Date()} calendarDays= {props.calendarDays}/>
-  </Provider>)
-}
+    <SheduleBoard onChange={props.onChange}
+      currentDate={new Date()} calendarDays= {props.calendarDays}/>
+  </Provider>;

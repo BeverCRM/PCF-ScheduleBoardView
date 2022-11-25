@@ -5,7 +5,9 @@
   },
   "extends": [
     "bever",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
   ],
   "globals": {
     "ComponentFramework": true
@@ -19,6 +21,10 @@
     "@typescript-eslint"
   ],
   "rules": {
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "default-param-last":"off",
+    "@typescript-eslint/no-empty-interface": "off",
     "class-methods-use-this": "off",
     "lines-between-class-members": ["error", "always", {
       "exceptAfterSingleLine": true

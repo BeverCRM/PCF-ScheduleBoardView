@@ -12,22 +12,20 @@
   "dependencies": {
     "@fluentui/react": "^8.94.1",
     "@reduxjs/toolkit": "^1.8.5",
-    "@types/react": "^18.0.18",
-    "@types/react-dom": "^18.0.6",
     "fluentui-react-grid": "^1.0.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
     "react-redux": "^8.0.4",
-    "redux": "^4.2.0",
-    "style-loader": "^3.3.1",
-    "webpack": "^5.74.0"
+    "react-tooltip-lite": "^1.12.0",
+    "redux": "^4.2.0"
   },
   "devDependencies": {
     "@types/node": "^16.4",
     "@types/powerapps-component-framework": "^1.3.0",
+    "@types/react": "^18.0.18",
+    "@types/react-dom": "^18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.40.1",
     "@typescript-eslint/parser": "^5.40.1",
-    "css-loader": "^6.7.1",
     "eslint": "^7.32.0",
     "eslint-config-bever": "^1.0.3",
     "eslint-plugin-import": "^2.26.0",
@@ -35,14 +33,8 @@
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-react": "^7.31.10",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "extract-loader": "^5.1.0",
-    "file-loader": "^6.2.0",
-    "pcf-sass-loader": "^1.0.0",
     "pcf-scripts": "^1",
     "pcf-start": "^1",
-    "postcss-loader": "^7.0.1",
-    "sass": "^1.54.9",
-    "sass-loader": "^13.0.2",
     "typescript": "^4.3"
   }
 }

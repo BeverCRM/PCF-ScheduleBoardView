@@ -1,136 +1,17 @@
-import {CalendarDate,SurroundingMonthsDate,Record,} from "../Components/SheduleBoard";
-import { store} from "../Store/Store";
+import { fetchSelectedMonthRecords } from '../Store/services';
+import { Record } from '../Store/types';
+import { getAbsoluteDate, CalendarDate } from '../Utilities/dateUtilities';
+
+export function getSelectedMonthBookings(
+  calendarDays: Array<Array<CalendarDate>>,
+): Array<Record> {
+  const startDate = getAbsoluteDate(calendarDays[0][0].value, 'START');
+  const endDate = getAbsoluteDate(calendarDays[calendarDays.length - 1][6].value, 'END');
+  const bookings = fetchSelectedMonthRecords({ start: startDate, end: endDate });
+  return bookings;
+} //
 
 /**
- * My Own Functions
- * ***
- * * Get days of the selected month by month number and year
- * * Returns an array of Date objects
- * @param month type[`number`] Month number in the calendar (0-11)
- * @param year type[`number`] Year in the calendar
- */
-
-export function TodayButtonIsDisabled(date: Date): boolean {
-  return (
-    date.getMonth() === new Date().getMonth() &&
-    date.getFullYear() === new Date().getFullYear()
-  );
-}
-
-export function getDaysOfTheSelectedMonth(
-  month: number,
-  year: number
-): Array<Date> {
-  const days: Array<Date> = [];
-
-  let i = 1;
-  let date: Date = new Date(year, month, i);
-
-  while (date.getMonth() == month) {
-    days.push(date);
-    date = new Date(year, month, ++i);
-  }
-
-  return days;
-}
-
-/**
- * My Own Functions
- * ***
- * * Get the days of the surrounding months
- * * Returns an object SurroundingMonthsDate
- * @param startDate type[`Date`] Calendar start date
- * @param endDate type[`Date`] Calendar end date
- */
-
-/* function getTitle(): string {
-  return `${MONTH_NAMES[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
-} */
-
-export function getTheDaysOfTheSurroundingMonths(
-  startDate: Date,
-  endDate: Date
-): SurroundingMonthsDate {
-  const days: SurroundingMonthsDate = {
-    previousMonthDays: Array<Date>(),
-    nextMonthDays: Array<Date>(),
-  };
-
-  const dateOfPreviousMonth: Date = new Date(startDate);
-  const dateOfNextMonth: Date = new Date(endDate);
-
-  while (dateOfPreviousMonth.getDay() != 1) {
-    dateOfPreviousMonth.setDate(dateOfPreviousMonth.getDate() - 1);
-    days.previousMonthDays.push(new Date(dateOfPreviousMonth));
-  }
-
-  while (dateOfNextMonth.getDay() != 0) {
-    dateOfNextMonth.setDate(dateOfNextMonth.getDate() + 1);
-    days.nextMonthDays.push(new Date(dateOfNextMonth));
-  }
-
-  days.previousMonthDays.reverse();
-
-  return days;
-}
-
-/**
- * My Own Functions
- * ***
- * * Generate calendar dates by selected and surrounding months
- * * Returns an array of Array\<CalendarDate\>
- * @param daysOfTheSelectedMonth type[`Date[]`] Array of days of the selected month
- * @param daysOfTheSurroundingMonths type[`Date[]`]  Array of days of the surrounding months
- */
-export function combineDates(
-  daysOfTheSelectedMonth: Array<Date>,
-  daysOfTheSurroundingMonths: SurroundingMonthsDate
-): Array<Array<CalendarDate>> {
-  const combinedDates = new Array<Array<CalendarDate>>();
-  combinedDates.push(new Array<CalendarDate>());
-
-  daysOfTheSurroundingMonths.previousMonthDays.forEach((item) => {
-    const calendarDate: CalendarDate = {
-      value: item,
-      day: item.getDate().toString(),
-      isTheItemOfTheSelectedMonth: false,
-      bookings: new Array<Record>(),
-    };
-
-    combinedDates[0].push(calendarDate);
-  });
-
-  daysOfTheSelectedMonth.forEach((item) => {
-    if (combinedDates[combinedDates.length - 1].length == 7)
-      combinedDates.push(new Array<CalendarDate>());
-
-    const calendarDate: CalendarDate = {
-      value: item,
-      day: item.getDate().toString(),
-      isTheItemOfTheSelectedMonth: true,
-      bookings: new Array<Record>(),
-    };
-
-    combinedDates[combinedDates.length - 1].push(calendarDate);
-  });
-
-  daysOfTheSurroundingMonths.nextMonthDays.forEach((item) => {
-    const calendarDate: CalendarDate = {
-      value: item,
-      day: item.getDate().toString(),
-      isTheItemOfTheSelectedMonth: false,
-      bookings: new Array<Record>(),
-    };
-
-    combinedDates[combinedDates.length - 1].push(calendarDate);
-  });
-
-  return combinedDates;
-}
-
-/**
- * My Own Functions
- * ***
  * * Generate calendar dates by selected and surrounding months
  * * Returns an array of Array\<CalendarDate\>
  * @param daysOfTheSelectedMonth type[`Date[]`] Array of days of the selected month
@@ -138,24 +19,98 @@ export function combineDates(
  */
 export function generateCalendarDates(
   combineDates: Array<Array<CalendarDate>>,
-  _bookings: Array<Record>
+  _bookings: Array<Record>,
 ): Array<Array<CalendarDate>> {
+
   const generatedDates = new Array<Array<CalendarDate>>(...combineDates);
   const bookings = new Array<Record>(..._bookings);
+  let previousItem: CalendarDate | undefined;
 
-  generatedDates.forEach((week) => {
-    week.forEach((item) => {
+  bookings.forEach(booking => {
+    booking.index = -1;
+  });
+
+  generatedDates.forEach(week => {
+    week.forEach(item => {
+      const currentDayBookings = new Array<Record>();
+      let i = 0;
+      let j = 0;
+
       for (const booking of bookings) {
         if (
-          getAbsoluteDate(item.value, "END") >= booking.start &&
-          getAbsoluteDate(item.value, "START") <= booking.end
-        )
-          item.bookings.push(booking);
+          getAbsoluteDate(item.value, 'END') >= booking.start &&
+          getAbsoluteDate(item.value, 'START') <= booking.end
+        ) {
+          if (booking.index !== -1) {
+            item.bookings.push(booking);
+            if (i <= booking.index) {
+              i = booking.index + 1;
+            }
+          }
+        }
       }
 
-      item.bookings.sort(
-        (previous, next) => previous.start.getTime() - next.start.getTime()
-      );
+      for (const booking of bookings) {
+        if (
+          getAbsoluteDate(item.value, 'END') >= booking.start &&
+          getAbsoluteDate(item.value, 'START') <= booking.end
+        ) {
+          if (booking.index === -1) {
+            currentDayBookings.push(booking);
+          }
+        }
+      }
+
+      item.bookings.sort((previous, next) => {
+        if (previous.index > next.index) return 1;
+        if (previous.index < next.index) return -1;
+        if (previous.start.getTime() > next.start.getTime()) return 1;
+        if (previous.start.getTime() < next.start.getTime()) return -1;
+        return 0;
+      });
+      if (previousItem !== undefined) {
+        const temporaryArray = [...item.bookings];
+        let b = 0;
+        for (let k = 0; k < i; ++k) {
+          if (item.bookings[b]?.index !== k) {
+            let record:Record;
+            if (currentDayBookings.length !== 0) {
+              record = currentDayBookings.shift()!;
+            }
+            else {
+              record = {
+                id: '1',
+                name: 'undefined',
+                start: new Date(),
+                end: new Date(),
+                color: '#FFFFFF',
+                isHovered: false,
+                index: 0,
+              };
+            }
+            temporaryArray.splice(k, 0, record);
+          }
+          else {
+            ++b;
+          }
+        }
+        item.bookings = temporaryArray.concat(currentDayBookings);
+      }
+      else {
+        item.bookings = item.bookings.concat(currentDayBookings);
+      }
+
+      j = 0;
+      item.bookings.forEach(booking => {
+        booking.index = j;
+        ++j;
+      });
+      if (item.value.getDay() === 0) {
+        previousItem = undefined;
+      }
+      else {
+        previousItem = item;
+      }
     });
   });
 
@@ -163,117 +118,49 @@ export function generateCalendarDates(
 }
 
 /**
- * My Own Functions
- * ***
- * * Creating unreal records so as not to disturb the order of bookings
- * * Returns an array of CalendarDate array
- * @param days type[`CalendarDate[][]`] Generated calendar dates
+ * * Change rendered month based on direction
+ * * Returns date of the month
+ * @param direction type 'string' diraction to go(back or forth)
+ * @param date type 'Date' current date
  */
-export function createHiddenBookings(
-  days: Array<Array<CalendarDate>>
-): Array<Array<CalendarDate>> {
-  days.forEach((week) => {
-    let recordWithTheMaxNumberOfBookings = 0;
-    let localBookings: Array<Record> = new Array<Record>();
-
-    week.forEach((item, index) => {
-      if (item.bookings.length > localBookings.length) {
-        localBookings = item.bookings;
-        recordWithTheMaxNumberOfBookings = index;
-      }
-    });
-
-    localBookings = new Array<Record>();
-    week[recordWithTheMaxNumberOfBookings].bookings.forEach((item) => {
-      const currentLocalRecord: Record = {
-        id: item.id,
-        name: item.name,
-        start: item.start,
-        end: item.end,
-        color: item.color,
-        isUnreal: true,
-      };
-
-      localBookings.push(currentLocalRecord);
-    });
-
-    week.forEach((item) => {
-      localBookings.forEach((currentBooking, index) => {
-        if (
-          item.bookings.findIndex(
-            (booking) => booking.id === currentBooking.id
-          ) === -1
-        ) {
-          item.bookings.splice(index, 0, currentBooking);
-        }
-      });
-    });
-  });
-
-  return days;
-}
-
-/**
- * My Own Functions
- * ***
- * * Get date absolute time
- * * Returns a date with time 00:00:00 or 23:59:59
- * @param date type[`Date`] Input date
- * @param type type[`string`] Type for choosing the date with 00:00:00(`START`) time or with 23:59:59(`END`) time
- */
-export function getAbsoluteDate(date: Date, type: string): Date {
-  const isoDate: Array<number> = isoDateFormatting(date)
-    .split("-")
-    .map((value) => Number(value));
-  let newDate: Date = new Date("");
-
-  if (type === "START")
-    newDate = new Date(isoDate[0], isoDate[1] - 1, isoDate[2], 0, 0, 0);
-  else if (type === "END")
-    newDate = new Date(isoDate[0], isoDate[1] - 1, isoDate[2], 23, 59, 59);
-
-  return newDate;
-}
-
-/**
- * My Own Functions
- * ***
- * * Converting the date to iso string
- * * Returns a date isoString
- * @param date type[`Date`] Date to convert iso format
- */
-export function isoDateFormatting(date: Date | string): string {
-  const d = new Date(date);
-  if (d.toString() === "Invalid Date") return "Invalid Date";
-
-  return `${d.getFullYear()}-${d.getMonth() < 9 ? "0" : ""}${
-    d.getMonth() + 1
-  }-${d.getDate() < 10 ? "0" : ""}${d.getDate()}`;
-}
-
-export function GetSelectedMonthBookings(
- calendarDays: Array<Array<CalendarDate>>
-): Array<Record> {
-  //const startDate = getAbsoluteDate(calendarDays[0][0].value, "START");
-  //const endDate = getAbsoluteDate(calendarDays[calendarDays.length - 1][6].value,"END");
-  //store.dispatch('fetchSelectedMonthRecords', { start: startDate, end: endDate });
-  //FetchSelectedMonthRecords({ start: startDate, end: endDate });
-  //const bookings = useSelector<IState,IState["selectedMonthRecords"]>((state) => state.selectedMonthRecords)
-  const bookings = store.getState().selectedMonthRecords;
-  //const bookings  = new Array<Record>
-  return bookings;
-} //
-
 export function changeMonth(
-  direction: string | undefined = undefined,
-  date: Date
+  direction: string | undefined,
+  date: Date,
 ): Date {
   let changedDate: Date = new Date(date);
 
-  if (direction == "BACK") changedDate.setMonth(changedDate.getMonth() - 1);
-  else if (direction == "FORWARD")
+  if (direction === 'BACK') {
+    changedDate.setMonth(changedDate.getMonth() - 1);
+  }
+  else if (direction === 'FORWARD') {
     changedDate.setMonth(changedDate.getMonth() + 1);
-  else changedDate = new Date();
+  }
+  else {
+    changedDate = new Date();
+  }
 
   return changedDate;
+}
+
+/**
+ * * change background color of the booking
+ * @param _booking type 'Record' record that should be changed
+ * @param _bookings type 'Array<Record>' array of Records
+ * @param option type 'string' difine mouce is on the record or not
+ */
+export function changeColor(_booking: Record, _bookings:Array<Record>, option:string | undefined) {
+  const bookings = new Array<Record>(..._bookings);
+  for (const book of bookings) {
+    if (book.id === _booking.id) {
+      if (option === 'Hover') {
+        book.isHovered = true;
+      }
+      else {
+        book.isHovered = false;
+      }
+    }
+    else {
+      book.isHovered = false;
+    }
+  }
 }
