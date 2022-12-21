@@ -1,4 +1,4 @@
-* {
+.bvrBoard_main, .bvrBoard_main * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -30,6 +30,24 @@
   width: 140px;
 }
 .bvrBoard_h_content .arrowButtons button {
+  color: #333;
+  text-align: center;
+  font-size: 1em !important;
+  outline: none;
+  border: none;
+  box-shadow: 0 1px 2px #888;
+  cursor: pointer;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+}
+.bvrBoard_viewChange {
+  float:right;
+  margin-top: 5px;
+}
+.bvrBoard_viewChange button {
   color: #333;
   text-align: center;
   font-size: 1em !important;
@@ -92,7 +110,6 @@
   text-align: center;
   font-weight: bold;
   border: 1px solid #cacaca;
-  border-bottom-width: 0;
   border-right-width: 0;
 }
 .bvrBoard_c_content .weekDays ul li:last-of-type {
@@ -100,6 +117,11 @@
 }
 .bvrBoard_c_content .calendar-body {
   width: 100%;
+  overflow: overlay;
+  border: 1px solid #cacaca;
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
 }
 .bvrBoard_c_content .calendar-body table {
   width: 100%;
@@ -155,7 +177,11 @@
   margin: 2px 0;
   border-radius: 2px;
   position: relative;
+  display: flex;
+  margin: 5px 0;
+  line-height: 150%;
 }
+
 .bvrBoard_bookings .isUnreal {
   visibility: hidden;
   display: none;
@@ -208,4 +234,22 @@
   padding: 3px;
   position: relative;
   left:3px
+}
+
+.bvrBoard_vertical {
+  border-left: 1px solid lightgrey;
+  height: 100%;
+  position:absolute;
+  left: 50%;
+}
+
+.bvrBoard_Loading{
+  width: 100%;
+  justify-content: center;
+}
+
+.bvrBoard_Loading .loadingText{
+  width: 100%;
+  margin-top: 5px;
+  text-align: center;
 }

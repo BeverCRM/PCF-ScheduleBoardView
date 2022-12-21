@@ -1,4 +1,4 @@
-import { Record } from '../Store/types';
+import { Record } from '../Store/Types';
 
 /**
  * * Get days of the selected month by month number and year

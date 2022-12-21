@@ -1,5 +1,5 @@
-import { fetchSelectedMonthRecords } from '../Store/services';
-import { Record } from '../Store/types';
+import { fetchSelectedMonthRecords } from '../Store/Services';
+import { Record } from '../Store/Types';
 import { getAbsoluteDate, CalendarDate } from '../Utilities/dateUtilities';
 
 export function getSelectedMonthBookings(
@@ -48,6 +48,9 @@ export function generateCalendarDates(
             }
           }
         }
+        if (item.bookings.length >= 6) {
+          break;
+        }
       }
 
       for (const booking of bookings) {
@@ -58,6 +61,9 @@ export function generateCalendarDates(
           if (booking.index === -1) {
             currentDayBookings.push(booking);
           }
+        }
+        if (currentDayBookings.length >= 6) {
+          break;
         }
       }
 
@@ -113,7 +119,7 @@ export function generateCalendarDates(
       }
     });
   });
-
+  console.log(generatedDates);
   return generatedDates;
 }
 
@@ -134,6 +140,25 @@ export function changeMonth(
   }
   else if (direction === 'FORWARD') {
     changedDate.setMonth(changedDate.getMonth() + 1);
+  }
+  else {
+    changedDate = new Date();
+  }
+
+  return changedDate;
+}
+
+export function changeDay(
+  direction: string | undefined,
+  date: Date,
+): Date {
+  let changedDate: Date = new Date(date);
+
+  if (direction === 'BACK') {
+    changedDate.setDate(changedDate.getDate() - 1);
+  }
+  else if (direction === 'FORWARD') {
+    changedDate.setDate(changedDate.getDate() + 1);
   }
   else {
     changedDate = new Date();

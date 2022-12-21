@@ -1,6 +1,6 @@
 import { Provider } from 'react-redux';
-import { SheduleBoard, SheduleBoardTime } from './sheduleBoard';
-import { store } from '../Store/store';
+import { SheduleBoard, SheduleBoardTime } from './SheduleBoard';
+import { store } from '../Store/Store';
 import * as React from 'react';
 
 export const Wrapper = (props: SheduleBoardTime) =>

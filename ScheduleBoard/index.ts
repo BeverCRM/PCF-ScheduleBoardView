@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import * as React from 'react';
 import { IInputs, IOutputs } from './generated/ManifestTypes';
-import { fetchRecordFieldSchemaNames, fetchRecords } from './Store/services';
+import { fetchRecordFieldSchemaNames, fetchRecords } from './Store/Services';
 import DataverseService from './Services/dataverseService';
 import { Wrapper } from './Components/AppWrapper';
-import { SheduleBoardTime } from './Components/sheduleBoard';
+import { SheduleBoardTime } from './Components/SheduleBoard';
+import { BoardSpinner } from './Components/Spinner';
 
 export class BvrScheduleBoardViewControl
 implements ComponentFramework.ReactControl<IInputs, IOutputs> {
@@ -36,7 +37,7 @@ implements ComponentFramework.ReactControl<IInputs, IOutputs> {
       context.parameters.enddate.raw,
     ];
     fetchRecordFieldSchemaNames(this.recordFieldSchemaNames);
-
+    DataverseService.setContext(context);
   }
 
   /**
@@ -46,21 +47,42 @@ implements ComponentFramework.ReactControl<IInputs, IOutputs> {
   public updateView(
     context: ComponentFramework.Context<IInputs>,
   ): React.ReactElement {
-    DataverseService.setContext(context);
     console.log(this.recordFieldSchemaNames);
-    const { records } = context.parameters.DataSet;
-    console.log(records);
-    fetchRecords(records);
+    if (!context.parameters.DataSet.loading) {
 
-    const props: SheduleBoardTime = {
-      currentDate: new Date(),
-      calendarDays: [],
-      onChange: this.notifyOutputChanged,
-    };
+      if (context.parameters.DataSet.paging !== null &&
+        context.parameters.DataSet.paging.hasNextPage === true) {
 
-    const element = React.createElement(Wrapper, props);
-    console.log(element);
-    return element;
+        // set page size
+
+        context.parameters.DataSet.paging.setPageSize(5000);
+
+        // load next paging
+
+        context.parameters.DataSet.paging.loadNextPage();
+
+      }
+      else {
+
+        const { records } = context.parameters.DataSet;
+        console.log(records);
+        fetchRecords(records);
+
+        const props: SheduleBoardTime = {
+          currentDate: new Date(),
+          calendarDays: [],
+          onChange: this.notifyOutputChanged,
+        };
+
+        const element = React.createElement(Wrapper, props);
+        console.log(element);
+        this.notifyOutputChanged();
+        return element;
+
+      }
+    }
+    return React.createElement(BoardSpinner);
+
   }
 
   /**

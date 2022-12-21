@@ -1,6 +1,6 @@
 import { configureStore, createSlice, getDefaultMiddleware, PayloadAction } from '@reduxjs/toolkit';
-import { IState } from './types';
-import { Record } from './types';
+import { IState } from './Types';
+import { Record } from './Types';
 import { setAutoFreeze } from 'immer';
 import { CalendarDate } from '../Utilities/dateUtilities';
 

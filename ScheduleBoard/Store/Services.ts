@@ -1,6 +1,6 @@
 import { randomColor } from '../Utilities/utilities';
-import { store, setRecords, setRecordFieldSchemaNames } from './store';
-import { Record } from './types';
+import { store, setRecords, setRecordFieldSchemaNames } from './Store';
+import { Record } from './Types';
 
 export function fetchRecordFieldSchemaNames(inputSchemaNames: any) {
   const schemaNames = {
