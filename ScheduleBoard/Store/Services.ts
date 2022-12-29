@@ -25,24 +25,19 @@ export function fetchSelectedMonthRecords(inputDate: any) {
     }
   });
   return data;
-  // store.dispatch(setSelectedMonthRecords(data));
 }
 
 export function fetchRecords(inputRecords: any) {
-  // const dispatch = useAppDispatch();
   const data:Array<Record> = [];
   const schemaNames = store.getState().recordFieldSchemaNames;
 
   for (const ID in inputRecords) {
     const record = inputRecords[ID];
-    console.log('1');
     const item: Record = {
       id: ID,
       name: record.getValue([schemaNames.name]),
       start: new Date(record.getValue([schemaNames.startDate])),
       end: new Date(record.getValue([schemaNames.endDate])),
-      // start: new Date(schemaNames.startDate),
-      // end: new Date(schemaNames.endDate),
       color: randomColor(),
       index: -1,
       isHovered: false,
@@ -50,7 +45,5 @@ export function fetchRecords(inputRecords: any) {
 
     data.push(item);
   }
-  console.log(data);
-  // store.dispatch(boardReducer.actions.setRecords(data));
   store.dispatch(setRecords(data));
 }

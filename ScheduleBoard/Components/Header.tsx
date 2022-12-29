@@ -66,6 +66,7 @@ export const Header: React.FunctionComponent<IHeader> = props => {
             setView(
               viewOptions,
             );
+            changeSize();
           }}
         >
           <button>{buttonName}</button>

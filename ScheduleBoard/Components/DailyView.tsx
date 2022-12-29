@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { fetchSelectedMonthRecords } from '../Store/Services';
 import { IViewOptions } from './SheduleBoard';
-import DataverseService from '../Services/dataverseService';
+import { openForm } from '../Services/dataverseService';
 import { Header } from './Header';
+import { getAbsoluteDate } from '../Utilities/dateUtilities';
 
 interface IDailyView {
   date: Date;
@@ -38,29 +39,30 @@ enum DAY_HOURS {
 
 export const DailyView: React.FunctionComponent<IDailyView> = props => {
   const { date, setDate, setView } = props;
-  // const [hover, setHover] = React.useState(0);
-  const [height, setHeight] = React.useState(0);
   const [width, setWidth] = React.useState(0);
+  const [height, setHeight] = React.useState(0);
 
-  const title = `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
-  let nextDay = new Date(date);
-  nextDay = new Date(nextDay.setDate(nextDay.getDate() + 1));
-  const bookings = fetchSelectedMonthRecords({ start: date, end: nextDay });
+  const title = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+
+  const start = getAbsoluteDate(date, 'START');
+  const end = getAbsoluteDate(date, 'END');
+
+  const bookings = fetchSelectedMonthRecords({ start, end });
 
   function calculateBookingWidth(startDate: Date, endDate:Date): string {
     let startDateTime = 0;
     let endDateTime = 2400;
-    if (startDate.getDate() === date.getDate()) {
+    if (startDate.getDate() === date.getDate() && startDate.getMonth() === date.getMonth()) {
       startDateTime = startDate.getHours() * 100 + startDate.getMinutes() / 0.6;
     }
-    if (endDate.getDate() === date.getDate()) {
+    if (endDate.getDate() === date.getDate() && endDate.getMonth() === date.getMonth()) {
       endDateTime = endDate.getHours() * 100 + endDate.getMinutes() / 0.6;
     }
     return `${(endDateTime - startDateTime) / 24}%`;
   }
 
   function calculateBookingMargin(startDate:Date): string {
-    if (startDate.getDate() === date.getDate()) {
+    if (startDate.getDate() === date.getDate() && startDate.getMonth() === date.getMonth()) {
       return `${(startDate.getHours() * 100 + startDate.getMinutes() / 0.6) / 24}%`;
     }
     return '0%';
@@ -75,14 +77,16 @@ export const DailyView: React.FunctionComponent<IDailyView> = props => {
   }
 
   function changeSize() {
-    const h = document.getElementById('bvrBoard_calendar-body')?.clientHeight;
-    const w = document.getElementById('bvrBoard_calendar-body')?.clientWidth;
-    if (h !== null) {
-      setHeight(h!);
-    }
-    if (w !== null) {
-      setWidth(w!);
-    }
+    setTimeout(() => {
+      const w = document.getElementById('bvrBoard_calendar-body')?.clientWidth;
+      const h = document.getElementById('bvrBoard_calendar-body')?.clientHeight;
+      if (w !== null) {
+        setWidth(w!);
+      }
+      if (h !== null) {
+        setHeight(h!);
+      }
+    }, 100);
   }
 
   React.useEffect(() => {
@@ -91,6 +95,10 @@ export const DailyView: React.FunctionComponent<IDailyView> = props => {
 
   React.useEffect(() => {
     window.addEventListener('resize', changeSize);
+  }, []);
+
+  React.useEffect(() => {
+    window.addEventListener('minimize', changeSize);
   }, []);
 
   return (
@@ -137,17 +145,17 @@ export const DailyView: React.FunctionComponent<IDailyView> = props => {
                     {bookings.map((booking, j) =>
                       <tr key={j}
                         className={ 'booking'}
-                        id = {`${j}`}
+                        id = {`booking${j}`}
                         style={
                           { backgroundColor: booking.color,
                             width: calculateBookingWidth(booking.start, booking.end),
                             marginLeft: calculateBookingMargin(booking.start) }}
-                        onClick={() => DataverseService.openForm(booking.id)}
+                        onClick={() => openForm(booking.id)}
                         onMouseEnter={() => {
-                          document.getElementById(`${j}`)!.style.background = '#383050';
+                          document.getElementById(`booking${j}`)!.style.background = '#383050';
                         }}
                         onMouseLeave={() => {
-                          document.getElementById(`${j}`)!.style.background = booking.color;
+                          document.getElementById(`booking${j}`)!.style.background = booking.color;
                         }}
                       >
                         <td className="booking-row">

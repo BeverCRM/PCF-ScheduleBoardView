@@ -119,7 +119,6 @@ export function generateCalendarDates(
       }
     });
   });
-  console.log(generatedDates);
   return generatedDates;
 }
 

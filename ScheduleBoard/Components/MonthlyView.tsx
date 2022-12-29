@@ -5,7 +5,7 @@ import {
   changeColor,
   getSelectedMonthBookings,
 } from '../Services/SheduleBoardServices';
-import DataverseService from '../Services/dataverseService';
+import { openForm } from '../Services/dataverseService';
 import {
   CalendarDate,
   combineDates,
@@ -16,7 +16,6 @@ import {
 import Tooltip from 'react-tooltip-lite';
 import { IViewOptions } from './SheduleBoard';
 import { Header } from './Header';
-import { checkBookingsExistance } from '../Utilities/utilities';
 
 enum MONTH_NAMES {
     'January',
@@ -80,7 +79,6 @@ export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {
     const days = generateCalendarDates(combinedDates, bookings);
     setDays(days);
   }
-  console.log(monthDays);
   const title = `${MONTH_NAMES[date.getMonth()]} ${date.getFullYear()}`;
 
   function currentMonthButtonIsDisabled(date: Date): boolean {
@@ -122,7 +120,6 @@ export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {
                       {row.map((date, j) =>
                         <td
                           key={`${i}-${j}`}
-                          id={`${i}-${j}`}
                           className={j === 5 || j === 6 ? 'day-off' : 'cell'}
                         >
                           <div className='cell-content'>
@@ -151,13 +148,12 @@ export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {
                                       b >= 5 ? 'isUnreal' : 'booking'
                                     }
                                     key={`${i}-${j}-${b}`}
-                                    id={`${i}-${j}-${b}`}
                                     style={booking.isHovered
                                       ? { backgroundColor: '#383050' }
                                       : { backgroundColor: booking.color,
                                         ...booking.color === '#FFFFFF' ? { visibility: 'hidden' }
                                           : { visibility: 'visible' } }}
-                                    onClick={() => DataverseService.openForm(booking.id)}
+                                    onClick={() => openForm(booking.id)}
                                     onMouseEnter={() => {
                                       changeColor(booking, date.bookings, 'Hover');
                                       setHover(hover + 1);

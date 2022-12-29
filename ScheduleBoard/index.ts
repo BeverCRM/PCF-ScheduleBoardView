@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { IInputs, IOutputs } from './generated/ManifestTypes';
 import { fetchRecordFieldSchemaNames, fetchRecords } from './Store/Services';
-import DataverseService from './Services/dataverseService';
+import { setContext } from './Services/dataverseService';
 import { Wrapper } from './Components/AppWrapper';
 import { SheduleBoardTime } from './Components/SheduleBoard';
 import { BoardSpinner } from './Components/Spinner';
@@ -37,7 +37,7 @@ implements ComponentFramework.ReactControl<IInputs, IOutputs> {
       context.parameters.enddate.raw,
     ];
     fetchRecordFieldSchemaNames(this.recordFieldSchemaNames);
-    DataverseService.setContext(context);
+    setContext(context);
   }
 
   /**
