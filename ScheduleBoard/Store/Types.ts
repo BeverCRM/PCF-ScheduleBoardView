@@ -7,7 +7,6 @@ export type Record = {
   end: Date;
   color: string;
   index: number;
-  isHovered: boolean;
 };
 
 export interface IState {

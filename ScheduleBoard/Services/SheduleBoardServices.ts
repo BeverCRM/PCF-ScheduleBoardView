@@ -90,7 +90,6 @@ export function generateCalendarDates(
                 start: new Date(),
                 end: new Date(),
                 color: '#FFFFFF',
-                isHovered: false,
                 index: 0,
               };
             }
@@ -164,27 +163,4 @@ export function changeDay(
   }
 
   return changedDate;
-}
-
-/**
- * * change background color of the booking
- * @param _booking type 'Record' record that should be changed
- * @param _bookings type 'Array<Record>' array of Records
- * @param option type 'string' difine mouce is on the record or not
- */
-export function changeColor(_booking: Record, _bookings:Array<Record>, option:string | undefined) {
-  const bookings = new Array<Record>(..._bookings);
-  for (const book of bookings) {
-    if (book.id === _booking.id) {
-      if (option === 'Hover') {
-        book.isHovered = true;
-      }
-      else {
-        book.isHovered = false;
-      }
-    }
-    else {
-      book.isHovered = false;
-    }
-  }
 }

@@ -2,12 +2,10 @@ import * as React from 'react';
 import { ReactNode } from 'react';
 import {
   generateCalendarDates,
-  changeColor,
   getSelectedMonthBookings,
 } from '../Services/SheduleBoardServices';
 import { openForm } from '../Services/dataverseService';
 import {
-  CalendarDate,
   combineDates,
   getDaysOfSelectedMonth,
   getDaysOfSurroundingMonths,
@@ -16,70 +14,42 @@ import {
 import Tooltip from 'react-tooltip-lite';
 import { IViewOptions } from './SheduleBoard';
 import { Header } from './Header';
+import { MonthNames, WeekDays } from '../Utilities/enums';
 
-enum MONTH_NAMES {
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+declare module 'react-tooltip-lite' {
+  interface TooltipProps {
+    children: ReactNode;
   }
-
-enum WEEK_DAYS {
-    Monday = 'Mon',
-    Tuesday = 'Tue',
-    Wednesday = 'Wed',
-    Thursday = 'Thu',
-    Friday = 'Fri',
-    Saturday = 'Sat',
-    Sunday = 'Sun',
-  }
-
-  declare module 'react-tooltip-lite' {
-      interface TooltipProps {
-      children: ReactNode;
-    }
-  }
+}
 
 interface IMonthlyView {
-    date: Date;
-    setDate: (date: Date) => void;
-    setView: (view: IViewOptions) => void;
-  }
+  date: Date;
+  setDate: (date: Date) => void;
+  setView: (view: IViewOptions) => void;
+}
 
 export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {
   const { date, setDate, setView } = props;
-  const [hover, setHover] = React.useState(0);
-  const [monthDays, setDays] = React.useState(new Array<Array<CalendarDate>>());
+  const calendarBodyRef = React.useRef<HTMLDivElement>(null);
 
-  if (monthDays[0] === undefined || monthDays[1][0].value.getMonth() !== date.getMonth()) {
-    const daysOfTheSelectedMonth: Array<Date> = getDaysOfSelectedMonth(
-      date.getMonth(),
-      date.getFullYear(),
-    );
-    const daysOfTheSurroundingMonths: SurroundingMonthsDate =
+  const daysOfTheSelectedMonth: Array<Date> = getDaysOfSelectedMonth(
+    date.getMonth(),
+    date.getFullYear(),
+  );
+  const daysOfTheSurroundingMonths: SurroundingMonthsDate =
     getDaysOfSurroundingMonths(
       daysOfTheSelectedMonth[0],
       daysOfTheSelectedMonth.slice(-1)[0],
     );
-    const combinedDates = combineDates(
-      daysOfTheSelectedMonth,
-      daysOfTheSurroundingMonths,
-    );
+  const combinedDates = combineDates(
+    daysOfTheSelectedMonth,
+    daysOfTheSurroundingMonths,
+  );
 
-    const bookings = getSelectedMonthBookings(combinedDates);
+  const bookings = getSelectedMonthBookings(combinedDates);
+  const days = generateCalendarDates(combinedDates, bookings);
 
-    const days = generateCalendarDates(combinedDates, bookings);
-    setDays(days);
-  }
-  const title = `${MONTH_NAMES[date.getMonth()]} ${date.getFullYear()}`;
+  const title = `${MonthNames[date.getMonth()]} ${date.getFullYear()}`;
 
   function currentMonthButtonIsDisabled(date: Date): boolean {
     return (
@@ -88,9 +58,17 @@ export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {
     );
   }
 
-  /* React.useEffect(() => {
-    setDays(days);
-  }, []); */
+  function changeSize() {
+    setTimeout(() => {
+      if (calendarBodyRef.current?.style.maxHeight) {
+        calendarBodyRef.current.style.maxHeight = `${window.innerHeight - 300}px`;
+      }
+    }, 100);
+  }
+
+  React.useEffect(() => {
+    window.addEventListener('resize', changeSize);
+  }, []);
 
   return (
     <div className="bvrBoard_main">
@@ -104,17 +82,17 @@ export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {
           <div className="bvrBoard_c_content">
             <div className="weekDays">
               <ul>
-                {Object.keys(WEEK_DAYS).map((label, i) =>
+                {Object.keys(WeekDays).map((label, i) =>
                   <li key={i}>{label}</li>,
                 )}
               </ul>
             </div>
-            <div className="calendar-body"
+            <div className="calendar-body" ref={calendarBodyRef}
               style={{ maxHeight: `${window.innerHeight - 300}px` }}
             >
               <table>
                 <thead>
-                  {monthDays.map((row, i) =>
+                  {days.map((row, i) =>
                     <tr className="bvrBoard_row" id={`${i}`} key={i}
                     >
                       {row.map((date, j) =>
@@ -145,22 +123,26 @@ export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {
                                 >
                                   <div
                                     className={
-                                      b >= 5 ? 'isUnreal' : 'booking'
+                                      b >= 5 ? 'isUnreal' : `booking booking${booking.id}`
                                     }
                                     key={`${i}-${j}-${b}`}
-                                    style={booking.isHovered
-                                      ? { backgroundColor: '#383050' }
-                                      : { backgroundColor: booking.color,
-                                        ...booking.color === '#FFFFFF' ? { visibility: 'hidden' }
-                                          : { visibility: 'visible' } }}
+                                    style={{ backgroundColor: booking.color,
+                                      ...booking.color === '#FFFFFF' ? { visibility: 'hidden' }
+                                        : { visibility: 'visible' } }}
                                     onClick={() => openForm(booking.id)}
                                     onMouseEnter={() => {
-                                      changeColor(booking, date.bookings, 'Hover');
-                                      setHover(hover + 1);
+                                      const elems =
+                                      document.getElementsByClassName(`booking${booking.id}`);
+                                      for (let i = 0; i < elems.length; ++i) {
+                                        elems[i].classList.add('bookingid');
+                                      }
                                     }}
                                     onMouseLeave={() => {
-                                      changeColor(booking, date.bookings, undefined);
-                                      setHover(hover - 1);
+                                      const elems =
+                                      document.getElementsByClassName(`booking${booking.id}`);
+                                      for (let i = 0; i < elems.length; ++i) {
+                                        elems[i].classList.remove('bookingid');
+                                      }
                                     }}
                                   >
                                     <div className="booking-row">

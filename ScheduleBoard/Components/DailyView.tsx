@@ -4,43 +4,18 @@ import { IViewOptions } from './SheduleBoard';
 import { openForm } from '../Services/dataverseService';
 import { Header } from './Header';
 import { getAbsoluteDate } from '../Utilities/dateUtilities';
+import { DayHours } from '../Utilities/enums';
 
 interface IDailyView {
   date: Date;
   setDate: (date: Date) => void;
   setView: (view: IViewOptions) => void;
 }
-enum DAY_HOURS {
-  zero = '00:00',
-  one = '01:00',
-  two = '02:00',
-  three = '03:00',
-  four = '04:00',
-  five = '05:00',
-  six = '06:00',
-  seven = '07:00',
-  eight = '08:00',
-  nine = '09:00',
-  ten = '10:00',
-  eleven = '11:00',
-  twelve = '12:00',
-  thirteen = '13:00',
-  fourteen = '14:00',
-  fifteen = '15:00',
-  sixteen = '16:00',
-  seventeen = '17:00',
-  eightteen = '18:00',
-  nineteen = '19:00',
-  twenty = '20:00',
-  twentyOne = '21:00',
-  twentyTwo = '22:00',
-  twentyThree= '23:00',
-}
 
 export const DailyView: React.FunctionComponent<IDailyView> = props => {
   const { date, setDate, setView } = props;
-  const [width, setWidth] = React.useState(0);
-  const [height, setHeight] = React.useState(0);
+  const verticalLinesRef = React.useRef<HTMLDivElement>(null);
+  const calendarBodyRef = React.useRef<HTMLDivElement>(null);
 
   const title = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 
@@ -78,27 +53,24 @@ export const DailyView: React.FunctionComponent<IDailyView> = props => {
 
   function changeSize() {
     setTimeout(() => {
-      const w = document.getElementById('bvrBoard_calendar-body')?.clientWidth;
-      const h = document.getElementById('bvrBoard_calendar-body')?.clientHeight;
-      if (w !== null) {
-        setWidth(w!);
+      if (calendarBodyRef.current?.style.maxHeight) {
+        calendarBodyRef.current.style.maxHeight = `${window.innerHeight - 300}px`;
       }
-      if (h !== null) {
-        setHeight(h!);
+      if (verticalLinesRef.current?.style.height) {
+        verticalLinesRef.current.style.height =
+      `${document.getElementById('bvrBoard_calendar-body')?.clientHeight}px`;
+        !document.getElementById('bvrBoard_calendar-body')?.style.maxHeight;
+      }
+      if (verticalLinesRef.current?.style.width) {
+        verticalLinesRef.current.style.width =
+      `${document.getElementById('bvrBoard_calendar-body')?.clientWidth}px`;
       }
     }, 100);
   }
 
   React.useEffect(() => {
-    changeSize();
-  }, []);
-
-  React.useEffect(() => {
     window.addEventListener('resize', changeSize);
-  }, []);
-
-  React.useEffect(() => {
-    window.addEventListener('minimize', changeSize);
+    changeSize();
   }, []);
 
   return (
@@ -113,23 +85,23 @@ export const DailyView: React.FunctionComponent<IDailyView> = props => {
           <div className="bvrBoard_c_content">
             <div className="weekDays">
               <ul>
-                {Object.values(DAY_HOURS).map((label, i) =>
+                {Object.values(DayHours).map((label, i) =>
                   <li key={i}>{label}</li>,
                 )}
               </ul>
             </div>
-            <div className="calendar-body" id='bvrBoard_calendar-body'
+            <div className="calendar-body" id='bvrBoard_calendar-body' ref={calendarBodyRef}
               style={{ maxHeight: `${window.innerHeight - 300}px` }}
             >
-              <div id='bvrBoard_verlicallines'
+              <div id='bvrBoard_verlicallines' ref={verticalLinesRef}
                 style={
                   { position: 'absolute',
-                    height: `${height}px`,
-                    width: `${width}px`,
+                    height: `0px`,
+                    width: `0px`,
                   }
                 }
               >
-                {Object.values(DAY_HOURS).map((label, i) =>
+                {Object.values(DayHours).map((label, i) =>
                   <div className="bvrBoard_vertical"
                     style={{ left: `${100 * i / 24}%` }}
                     key = {i}
@@ -151,11 +123,11 @@ export const DailyView: React.FunctionComponent<IDailyView> = props => {
                             width: calculateBookingWidth(booking.start, booking.end),
                             marginLeft: calculateBookingMargin(booking.start) }}
                         onClick={() => openForm(booking.id)}
-                        onMouseEnter={() => {
-                          document.getElementById(`booking${j}`)!.style.background = '#383050';
+                        onMouseEnter={ e => {
+                          e.currentTarget.style.background = '#383050';
                         }}
-                        onMouseLeave={() => {
-                          document.getElementById(`booking${j}`)!.style.background = booking.color;
+                        onMouseLeave={ e => {
+                          e.currentTarget.style.background = booking.color;
                         }}
                       >
                         <td className="booking-row">

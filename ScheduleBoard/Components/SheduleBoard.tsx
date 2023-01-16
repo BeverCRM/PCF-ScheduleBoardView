@@ -25,25 +25,8 @@ export const SheduleBoard: React.FunctionComponent<SheduleBoardTime> = props => 
   const [date, setDate] = React.useState(currentDate);
   const [view, setView] = React.useState(defaultView);
 
-  function chnageDate(date: Date) {
-    setDate(date);
-  }
-
-  function chnageview(view:IViewOptions) {
-    setView(view);
-  }
-
-  if (view.monthly === true) {
-    return (
-      <MonthlyView date={date} setDate={chnageDate} setView={chnageview}/>
-    );
-  }
   if (view.daily === true) {
-    return (
-      <DailyView date={date} setDate={chnageDate} setView={chnageview}/>
-    );
+    return <DailyView date={date} setDate={setDate.bind(null)} setView={setView.bind(null)}/>;
   }
-  return (
-    <MonthlyView date={date} setDate={chnageDate} setView={chnageview}/>
-  );
+  return <MonthlyView date={date} setDate={setDate.bind(null)} setView={setView.bind(null)}/>;
 };

@@ -182,6 +182,10 @@
   line-height: 150%;
 }
 
+.bvrBoard_bookings .bookingid {
+  background-color: #383050 !important;
+}
+
 .bvrBoard_bookings .isUnreal {
   visibility: hidden;
   display: none;

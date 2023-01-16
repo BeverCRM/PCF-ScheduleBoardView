@@ -10,13 +10,13 @@ const defaultState: IState = {
   recordFieldSchemaNames: { name: '', startDate: '', endDate: '' },
 };
 
-type schemaNames = { name: ''; startDate: ''; endDate: '' };
+type SchemaNames = { name: ''; startDate: ''; endDate: '' };
 
 export const boardReducer = createSlice({
   name: 'Board',
   initialState: defaultState,
   reducers: {
-    setRecordFieldSchemaNames: (state, action: PayloadAction<schemaNames>) => {
+    setRecordFieldSchemaNames: (state, action: PayloadAction<SchemaNames>) => {
       state.recordFieldSchemaNames = action.payload;
     },
     setSelectedMonthRecords: (state, action: PayloadAction<Array<Array<CalendarDate>>>) => {

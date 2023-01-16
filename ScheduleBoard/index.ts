@@ -3,8 +3,7 @@ import * as React from 'react';
 import { IInputs, IOutputs } from './generated/ManifestTypes';
 import { fetchRecordFieldSchemaNames, fetchRecords } from './Store/Services';
 import { setContext } from './Services/dataverseService';
-import { Wrapper } from './Components/AppWrapper';
-import { SheduleBoardTime } from './Components/SheduleBoard';
+import { SheduleBoard, SheduleBoardTime } from './Components/SheduleBoard';
 import { BoardSpinner } from './Components/Spinner';
 
 export class BvrScheduleBoardViewControl
@@ -74,7 +73,7 @@ implements ComponentFramework.ReactControl<IInputs, IOutputs> {
           onChange: this.notifyOutputChanged,
         };
 
-        const element = React.createElement(Wrapper, props);
+        const element = React.createElement(SheduleBoard, props);
         console.log(element);
         this.notifyOutputChanged();
         return element;

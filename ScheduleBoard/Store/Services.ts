@@ -27,20 +27,23 @@ export function fetchSelectedMonthRecords(inputDate: any) {
   return data;
 }
 
-export function fetchRecords(inputRecords: any) {
+type InputRecords = {
+  [id: string]: ComponentFramework.PropertyHelper.DataSetApi.EntityRecord;
+}
+
+export function fetchRecords(inputRecords: InputRecords) {
   const data:Array<Record> = [];
   const schemaNames = store.getState().recordFieldSchemaNames;
-
+  console.log('test');
   for (const ID in inputRecords) {
     const record = inputRecords[ID];
     const item: Record = {
       id: ID,
-      name: record.getValue([schemaNames.name]),
-      start: new Date(record.getValue([schemaNames.startDate])),
-      end: new Date(record.getValue([schemaNames.endDate])),
+      name: <string>record.getValue(schemaNames.name),
+      start: new Date(<string>(record.getValue(schemaNames.startDate))),
+      end: new Date(<string>(record.getValue(schemaNames.endDate))),
       color: randomColor(),
       index: -1,
-      isHovered: false,
     };
 
     data.push(item);
