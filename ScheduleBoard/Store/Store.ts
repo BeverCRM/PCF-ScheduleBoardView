@@ -1,11 +1,10 @@
 import { configureStore, createSlice, getDefaultMiddleware, PayloadAction } from '@reduxjs/toolkit';
-import { IState } from './Types';
+import { CalendarDate, IState } from './Types';
 import { Record } from './Types';
 import { setAutoFreeze } from 'immer';
-import { CalendarDate } from '../Utilities/dateUtilities';
 
-const defaultState: IState = {
-  records: [],
+const initialState: IState = {
+  records: new Array<Record>(),
   selectedMonthRecords: new Array<Array<CalendarDate>>(),
   recordFieldSchemaNames: { name: '', startDate: '', endDate: '' },
 };
@@ -14,7 +13,7 @@ type SchemaNames = { name: ''; startDate: ''; endDate: '' };
 
 export const boardReducer = createSlice({
   name: 'Board',
-  initialState: defaultState,
+  initialState,
   reducers: {
     setRecordFieldSchemaNames: (state, action: PayloadAction<SchemaNames>) => {
       state.recordFieldSchemaNames = action.payload;

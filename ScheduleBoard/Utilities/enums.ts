@@ -11,7 +11,7 @@ export enum MonthNames {
   'October',
   'November',
   'December',
-  }
+}
 
 export enum WeekDays {
   Monday = 'Mon',

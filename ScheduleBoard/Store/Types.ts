@@ -1,4 +1,14 @@
-import { CalendarDate } from '../Utilities/dateUtilities';
+export type SurroundingMonthsDate = {
+  previousMonthDays: Array<Date>;
+  nextMonthDays: Array<Date>;
+};
+
+export type CalendarDate = {
+  value: Date;
+  day: string;
+  isTheItemOfTheSelectedMonth: boolean;
+  bookings: Array<Record>;
+};
 
 export type Record = {
   id: string;

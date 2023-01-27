@@ -118,8 +118,9 @@ export const DailyView: React.FunctionComponent<IDailyView> = props => {
                       <tr key={j}
                         className={ 'booking'}
                         id = {`booking${j}`}
-                        style={
-                          { backgroundColor: booking.color,
+                        style={ calculateBookingWidth(booking.start, booking.end) === '0%'
+                          ? { display: 'none' }
+                          : { backgroundColor: booking.color,
                             width: calculateBookingWidth(booking.start, booking.end),
                             marginLeft: calculateBookingMargin(booking.start) }}
                         onClick={() => openForm(booking.id)}

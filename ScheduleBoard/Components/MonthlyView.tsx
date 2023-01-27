@@ -9,12 +9,12 @@ import {
   combineDates,
   getDaysOfSelectedMonth,
   getDaysOfSurroundingMonths,
-  SurroundingMonthsDate,
 } from '../Utilities/dateUtilities';
 import Tooltip from 'react-tooltip-lite';
 import { IViewOptions } from './SheduleBoard';
 import { Header } from './Header';
 import { MonthNames, WeekDays } from '../Utilities/enums';
+import { SurroundingMonthsDate } from '../Store/Types';
 
 declare module 'react-tooltip-lite' {
   interface TooltipProps {
@@ -31,16 +31,17 @@ interface IMonthlyView {
 export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {
   const { date, setDate, setView } = props;
   const calendarBodyRef = React.useRef<HTMLDivElement>(null);
-
   const daysOfTheSelectedMonth: Array<Date> = getDaysOfSelectedMonth(
     date.getMonth(),
     date.getFullYear(),
   );
+
   const daysOfTheSurroundingMonths: SurroundingMonthsDate =
     getDaysOfSurroundingMonths(
       daysOfTheSelectedMonth[0],
       daysOfTheSelectedMonth.slice(-1)[0],
     );
+
   const combinedDates = combineDates(
     daysOfTheSelectedMonth,
     daysOfTheSurroundingMonths,
@@ -114,7 +115,14 @@ export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {
                               {date.bookings.map((booking, b) =>
                                 <Tooltip
                                   key={b}
-                                  content={booking.name}
+                                  content={
+                                    <ul style={{ listStyleType: 'none', padding: 0 }}>
+                                      <li>{booking.name}</li>
+                                      <li>{booking.start.toLocaleString()}</li>
+                                      <li>{booking.end.toLocaleString()}</li>
+                                    </ul>
+                                  }
+
                                   background={booking.color}
                                   color='white'
                                   styles={booking.color === '#FFFFFF'

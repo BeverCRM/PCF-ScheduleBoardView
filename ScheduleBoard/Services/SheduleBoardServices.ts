@@ -1,29 +1,30 @@
+import { cloneDeep } from 'lodash';
 import { fetchSelectedMonthRecords } from '../Store/Services';
-import { Record } from '../Store/Types';
-import { getAbsoluteDate, CalendarDate } from '../Utilities/dateUtilities';
+import { CalendarDate, Record } from '../Store/Types';
+import { getAbsoluteDate } from '../Utilities/dateUtilities';
 
 export function getSelectedMonthBookings(
   calendarDays: Array<Array<CalendarDate>>,
 ): Array<Record> {
   const startDate = getAbsoluteDate(calendarDays[0][0].value, 'START');
   const endDate = getAbsoluteDate(calendarDays[calendarDays.length - 1][6].value, 'END');
+  const obj = { start: startDate, end: endDate };
   const bookings = fetchSelectedMonthRecords({ start: startDate, end: endDate });
   return bookings;
-} //
+}
 
 /**
  * * Generate calendar dates by selected and surrounding months
  * * Returns an array of Array\<CalendarDate\>
  * @param daysOfTheSelectedMonth type[`Date[]`] Array of days of the selected month
  * @param daysOfTheSurroundingMonths type[`Date[]`]  Array of days of the surrounding months
- */
+*/
 export function generateCalendarDates(
   combineDates: Array<Array<CalendarDate>>,
   _bookings: Array<Record>,
 ): Array<Array<CalendarDate>> {
-
   const generatedDates = new Array<Array<CalendarDate>>(...combineDates);
-  const bookings = new Array<Record>(..._bookings);
+  const bookings = cloneDeep(_bookings);
   let previousItem: CalendarDate | undefined;
 
   bookings.forEach(booking => {
@@ -74,6 +75,7 @@ export function generateCalendarDates(
         if (previous.start.getTime() < next.start.getTime()) return -1;
         return 0;
       });
+
       if (previousItem !== undefined) {
         const temporaryArray = [...item.bookings];
         let b = 0;
@@ -110,6 +112,7 @@ export function generateCalendarDates(
         booking.index = j;
         ++j;
       });
+
       if (item.value.getDay() === 0) {
         previousItem = undefined;
       }
@@ -126,7 +129,7 @@ export function generateCalendarDates(
  * * Returns date of the month
  * @param direction type 'string' diraction to go(back or forth)
  * @param date type 'Date' current date
- */
+*/
 export function changeMonth(
   direction: string | undefined,
   date: Date,

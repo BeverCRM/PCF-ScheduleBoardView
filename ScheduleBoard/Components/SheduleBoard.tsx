@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { CalendarDate } from '../Utilities/dateUtilities';
 import { DailyView } from './DailyView';
 import { MonthlyView } from './MonthlyView';
+import { Provider } from 'react-redux';
+import { store } from '../Store/Store';
+import { CalendarDate } from '../Store/Types';
 
 export interface SheduleBoardTime {
   onChange: (date: Date | null) => void;
@@ -22,11 +24,21 @@ export const SheduleBoard: React.FunctionComponent<SheduleBoardTime> = props => 
     weekly: false,
     daily: false,
   };
+
+  // fetchRecords(records);
   const [date, setDate] = React.useState(currentDate);
   const [view, setView] = React.useState(defaultView);
 
   if (view.daily === true) {
-    return <DailyView date={date} setDate={setDate.bind(null)} setView={setView.bind(null)}/>;
+    return (
+      <Provider store={store}>
+        <DailyView date={date} setDate={setDate.bind(null)} setView={setView.bind(null)}/>
+      </Provider>
+    );
   }
-  return <MonthlyView date={date} setDate={setDate.bind(null)} setView={setView.bind(null)}/>;
+  return (
+    <Provider store={store}>
+      <MonthlyView date={date} setDate={setDate.bind(null)} setView={setView.bind(null)}/>
+    </Provider>
+  );
 };
