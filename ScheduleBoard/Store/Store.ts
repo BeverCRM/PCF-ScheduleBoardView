@@ -1,5 +1,5 @@
 import { configureStore, createSlice, getDefaultMiddleware, PayloadAction } from '@reduxjs/toolkit';
-import { CalendarDate, IState } from './Types';
+import { CalendarDate, IState, SchemaNames } from './Types';
 import { Record } from './Types';
 import { setAutoFreeze } from 'immer';
 
@@ -8,8 +8,6 @@ const initialState: IState = {
   selectedMonthRecords: new Array<Array<CalendarDate>>(),
   recordFieldSchemaNames: { name: '', startDate: '', endDate: '' },
 };
-
-type SchemaNames = { name: ''; startDate: ''; endDate: '' };
 
 export const boardReducer = createSlice({
   name: 'Board',

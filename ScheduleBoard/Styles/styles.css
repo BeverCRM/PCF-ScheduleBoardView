@@ -133,6 +133,7 @@
 .bvrBoard_c_content .calendar-body {
   width: 100%;
   overflow: overlay;
+  overflow-x: hidden;
   border: 1px solid #cacaca;
   border-top: 0;
   border-right: 0;
@@ -220,6 +221,7 @@
 
 .bvrBoard_bookings .booking .booking-row {
   padding: 0 5px;
+  height: 21px;
 }
 
 .bvrBoard_bookings .booking .booking-row .booking-name {
@@ -245,6 +247,7 @@
   padding-right: 5px;
   display: inline-block;
   border: none;
+  cursor: pointer;
 }
 
 .bvrBoard_down {

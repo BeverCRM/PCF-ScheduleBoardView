@@ -164,13 +164,16 @@ export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {
                             </div>
                             <div className='bvrBoard_expander'>
                               <button className='button'
-                                style={ date.bookings.length <= 5 ? { visibility: 'hidden' }
-                                  : { visibility: 'visible' } }
+                                // </div>style={ date.bookings.length <= 5 ? { visibility: 'hidden' }
+                                //  : { visibility: 'visible' } }
                                 onClick={() => {
                                   setView({ monthly: false, weekly: false, daily: true });
                                   setDate(date.value);
                                 }}>
-                               Show More
+                                { date.bookings.length > 5 ? 'Show More'
+                                  : date.bookings.length >= 1
+                                    ? 'Daily View'
+                                    : '' }
                               </button>
                             </div>
                           </div>

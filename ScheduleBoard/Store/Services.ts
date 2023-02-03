@@ -1,21 +1,21 @@
 import { randomColor } from '../Utilities/utilities';
 import { useAppSelector } from './hooks';
 import { store, setRecords, setRecordFieldSchemaNames } from './Store';
-import { Record } from './Types';
+import { Record, SchemaNames } from './Types';
 
-export function fetchRecordFieldSchemaNames(inputSchemaNames: any) {
-  const schemaNames = {
-    name: inputSchemaNames[0],
-    startDate: inputSchemaNames[1],
-    endDate: inputSchemaNames[2],
+export function fetchRecordFieldSchemaNames(inputSchemaNames: Array<String | null>) {
+  const schemaNames: SchemaNames = {
+    name: inputSchemaNames[0] as '',
+    startDate: inputSchemaNames[1] as '',
+    endDate: inputSchemaNames[2] as '',
   };
 
   store.dispatch(setRecordFieldSchemaNames(schemaNames));
 }
 
 export function fetchSelectedMonthRecords(inputDate: {
-  start: Date;
-  end: Date;
+  start: Date,
+  end: Date,
 }) {
   const data: Array<Record> = [];
   const records = useAppSelector(store => store.records);
@@ -48,7 +48,9 @@ export function fetchRecords(inputRecords: InputRecords) {
       color: randomColor(),
       index: -1,
     };
-    data.push(item);
+    if (item.start.getTime() < item.end.getTime()) {
+      data.push(item);
+    }
   }
 
   store.dispatch(setRecords(data));

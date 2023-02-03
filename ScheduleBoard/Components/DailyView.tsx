@@ -5,6 +5,7 @@ import { openForm } from '../Services/dataverseService';
 import { Header } from './Header';
 import { getAbsoluteDate } from '../Utilities/dateUtilities';
 import { DayHours } from '../Utilities/enums';
+import Tooltip from 'react-tooltip-lite';
 
 interface IDailyView {
   date: Date;
@@ -122,7 +123,8 @@ export const DailyView: React.FunctionComponent<IDailyView> = props => {
                           ? { display: 'none' }
                           : { backgroundColor: booking.color,
                             width: calculateBookingWidth(booking.start, booking.end),
-                            marginLeft: calculateBookingMargin(booking.start) }}
+                            marginLeft: calculateBookingMargin(booking.start),
+                            height: '21px' }}
                         onClick={() => openForm(booking.id)}
                         onMouseEnter={ e => {
                           e.currentTarget.style.background = '#383050';
@@ -131,11 +133,29 @@ export const DailyView: React.FunctionComponent<IDailyView> = props => {
                           e.currentTarget.style.background = booking.color;
                         }}
                       >
-                        <td className="booking-row">
-                          <span className="booking-name">
-                            {booking.name}
-                          </span>
-                        </td>
+                        <div style={{ width: '100%' }}>
+                          <Tooltip
+                            content={
+                              <ul style={{ listStyleType: 'none', padding: 0 }}>
+                                <li>{booking.name}</li>
+                                <li>{booking.start.toLocaleString()}</li>
+                                <li>{booking.end.toLocaleString()}</li>
+                              </ul>
+                            }
+
+                            background={booking.color}
+                            color='white'
+                            styles={booking.color === '#FFFFFF'
+                              ? { visibility: 'hidden' }
+                              : { visibility: 'visible' }}
+                          >
+                            <td className="booking-row">
+                              <span className="booking-name">
+                                {booking.name}
+                              </span>
+                            </td>
+                          </Tooltip>
+                        </div>
                       </tr>,
                     )}
                   </tbody>

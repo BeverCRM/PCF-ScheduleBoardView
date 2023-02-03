@@ -98,5 +98,7 @@ implements ComponentFramework.ReactControl<IInputs, IOutputs> {
 
   public destroy(): void {
     // Add code to cleanup control if necessary
+    console.log('destroy');
+
   }
 }

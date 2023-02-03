@@ -62,6 +62,8 @@ export const Header: React.FunctionComponent<IHeader> = props => {
         </div>
         <div className="period">{title}</div>
         <div className="bvrBoard_viewChange"
+          style={ viewOptions.daily ? { display: 'none' }
+            : { display: 'block' }}
           onClick={() => {
             setView(
               viewOptions,

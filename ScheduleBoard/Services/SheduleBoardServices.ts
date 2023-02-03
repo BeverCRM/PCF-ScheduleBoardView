@@ -8,7 +8,6 @@ export function getSelectedMonthBookings(
 ): Array<Record> {
   const startDate = getAbsoluteDate(calendarDays[0][0].value, 'START');
   const endDate = getAbsoluteDate(calendarDays[calendarDays.length - 1][6].value, 'END');
-  const obj = { start: startDate, end: endDate };
   const bookings = fetchSelectedMonthRecords({ start: startDate, end: endDate });
   return bookings;
 }
@@ -23,8 +22,8 @@ export function generateCalendarDates(
   combineDates: Array<Array<CalendarDate>>,
   _bookings: Array<Record>,
 ): Array<Array<CalendarDate>> {
-  const generatedDates = new Array<Array<CalendarDate>>(...combineDates);
-  const bookings = cloneDeep(_bookings);
+  const generatedDates: CalendarDate[][] = [...combineDates];
+  const bookings:Record[] = cloneDeep(_bookings);
   let previousItem: CalendarDate | undefined;
 
   bookings.forEach(booking => {
@@ -40,7 +39,8 @@ export function generateCalendarDates(
       for (const booking of bookings) {
         if (
           getAbsoluteDate(item.value, 'END') >= booking.start &&
-          getAbsoluteDate(item.value, 'START') <= booking.end
+          getAbsoluteDate(item.value, 'START') <= booking.end &&
+          booking.start.getTime() < booking.end.getTime()
         ) {
           if (booking.index !== -1) {
             item.bookings.push(booking);
@@ -48,9 +48,6 @@ export function generateCalendarDates(
               i = booking.index + 1;
             }
           }
-        }
-        if (item.bookings.length >= 6) {
-          break;
         }
       }
 
@@ -76,6 +73,7 @@ export function generateCalendarDates(
         return 0;
       });
 
+      item.bookings = item.bookings.slice(0, 6);
       if (previousItem !== undefined) {
         const temporaryArray = [...item.bookings];
         let b = 0;
