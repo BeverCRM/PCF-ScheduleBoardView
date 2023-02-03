@@ -1,9 +1,7 @@
-import { IViewOptions } from '../Components/SheduleBoard';
 import { IInputs } from '../generated/ManifestTypes';
 
 let _context: ComponentFramework.Context<IInputs>;
 let _targetEntityType: string;
-let _historyOptions: { date: Date, board: String};
 
 export function setContext(context: ComponentFramework.Context<IInputs>) {
   _context = context;

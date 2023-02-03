@@ -1,4 +1,3 @@
-import { cloneDeep } from 'lodash';
 import { fetchSelectedMonthRecords } from '../Store/Services';
 import { CalendarDate, Record } from '../Store/Types';
 import { getAbsoluteDate } from '../Utilities/dateUtilities';
@@ -23,7 +22,7 @@ export function generateCalendarDates(
   _bookings: Array<Record>,
 ): Array<Array<CalendarDate>> {
   const generatedDates: CalendarDate[][] = [...combineDates];
-  const bookings:Record[] = cloneDeep(_bookings);
+  const bookings:Record[] = _bookings.map(k => ({ ...k }));
   let previousItem: CalendarDate | undefined;
 
   bookings.forEach(booking => {
@@ -105,7 +104,6 @@ export function generateCalendarDates(
         item.bookings = item.bookings.concat(currentDayBookings);
       }
 
-      j = 0;
       item.bookings.forEach(booking => {
         booking.index = j;
         ++j;

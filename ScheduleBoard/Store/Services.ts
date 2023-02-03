@@ -5,9 +5,9 @@ import { Record, SchemaNames } from './Types';
 
 export function fetchRecordFieldSchemaNames(inputSchemaNames: Array<String | null>) {
   const schemaNames: SchemaNames = {
-    name: inputSchemaNames[0] as '',
-    startDate: inputSchemaNames[1] as '',
-    endDate: inputSchemaNames[2] as '',
+    name: inputSchemaNames[0] as string,
+    startDate: inputSchemaNames[1] as string,
+    endDate: inputSchemaNames[2] as string,
   };
 
   store.dispatch(setRecordFieldSchemaNames(schemaNames));
@@ -17,7 +17,7 @@ export function fetchSelectedMonthRecords(inputDate: {
   start: Date,
   end: Date,
 }) {
-  const data: Array<Record> = [];
+  const data: Record[] = [];
   const records = useAppSelector(store => store.records);
   records.forEach(item => {
     if (

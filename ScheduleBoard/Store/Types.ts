@@ -7,7 +7,7 @@ export type CalendarDate = {
   value: Date,
   day: string,
   isTheItemOfTheSelectedMonth: boolean,
-  bookings: Array<Record>,
+  bookings: Record[],
 };
 
 export type Record = {
@@ -19,10 +19,10 @@ export type Record = {
   index: number,
 };
 
-export interface IState {
-  records: Array<Record>,
-  selectedMonthRecords: Array<Array<CalendarDate>>,
-  recordFieldSchemaNames: { name: ''; startDate: ''; endDate: '' },
-}
+export type SchemaNames = { name: string, startDate: string, endDate: string };
 
-export type SchemaNames = { name: ''; startDate: ''; endDate: '' };
+export interface IState {
+  records: Record[];
+  selectedMonthRecords: CalendarDate[][];
+  recordFieldSchemaNames: SchemaNames;
+}

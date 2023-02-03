@@ -8,7 +8,7 @@ import { CalendarDate } from '../Store/Types';
 export interface SheduleBoardTime {
   onChange: (date: Date | null) => void;
   currentDate: Date;
-  calendarDays: Array<Array<CalendarDate>>;
+  calendarDays: CalendarDate[][];
 }
 
 export interface IViewOptions {
