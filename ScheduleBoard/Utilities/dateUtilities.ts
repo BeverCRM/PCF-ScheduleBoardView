@@ -1,23 +1,11 @@
-import { Record } from '../Store/types';
+import { CalendarDate, SurroundingMonthsDate } from './Types';
 
 /**
  * * Get days of the selected month by month number and year
  * * Returns an array of Date objects
  * @param month type[`number`] Month number in the calendar (0-11)
  * @param year type[`number`] Year in the calendar
- */
-
-export type SurroundingMonthsDate = {
-    previousMonthDays: Array<Date>;
-    nextMonthDays: Array<Date>;
-  };
-export type CalendarDate = {
-    value: Date;
-    day: string;
-    isTheItemOfTheSelectedMonth: boolean;
-    bookings: Array<Record>;
-  };
-
+*/
 export function getDaysOfSelectedMonth(
   month: number,
   year: number,
@@ -36,11 +24,11 @@ export function getDaysOfSelectedMonth(
 }
 
 /**
-   * * Get the days of the surrounding months
-   * * Returns an object SurroundingMonthsDate
-   * @param startDate type[`Date`] Calendar start date
-   * @param endDate type[`Date`] Calendar end date
-   */
+  * * Get the days of the surrounding months
+  * * Returns an object SurroundingMonthsDate
+  * @param startDate type[`Date`] Calendar start date
+  * @param endDate type[`Date`] Calendar end date
+*/
 export function getDaysOfSurroundingMonths(
   startDate: Date,
   endDate: Date,
@@ -69,11 +57,11 @@ export function getDaysOfSurroundingMonths(
 }
 
 /**
-   * * Generate calendar dates by selected and surrounding months
-   * * Returns an array of Array\<CalendarDate\>
-   * @param daysOfTheSelectedMonth type[`Date[]`] Array of days of the selected month
-   * @param daysOfTheSurroundingMonths type[`Date[]`]  Array of days of the surrounding months
-   */
+  * * Generate calendar dates by selected and surrounding months
+  * * Returns an array of Array\<CalendarDate\>
+  * @param daysOfTheSelectedMonth type[`Date[]`] Array of days of the selected month
+  * @param daysOfTheSurroundingMonths type[`Date[]`]  Array of days of the surrounding months
+*/
 export function combineDates(
   daysOfSelectedMonth: Array<Date>,
   daysOfSurroundingMonths: SurroundingMonthsDate,
@@ -122,10 +110,10 @@ export function combineDates(
 }
 
 /**
-   * * Converting the date to iso string
-   * * Returns a date isoString
-   * @param date type[`Date`] Date to convert iso format
-   */
+  * * Converting the date to iso string
+  * * Returns a date isoString
+  * @param date type[`Date`] Date to convert iso format
+*/
 export function isoDateFormatting(date: Date | string): string {
   const d = new Date(date);
   if (d.toString() === 'Invalid Date') return 'Invalid Date';
@@ -136,11 +124,11 @@ export function isoDateFormatting(date: Date | string): string {
 }
 
 /**
-   * * Get date absolute time
-   * * Returns a date with time 00:00:00 or 23:59:59
-   * @param date type[`Date`] Input date
-   * @param type type[`string`] Type for choosing the date with 00:00:00(`START`) time or with 23:59:59(`END`) time
-   */
+  * * Get date absolute time
+  * * Returns a date with time 00:00:00 or 23:59:59
+  * @param date type[`Date`] Input date
+  * @param type type[`string`] Type for choosing the date with 00:00:00(`START`) time or with 23:59:59(`END`) time
+*/
 export function getAbsoluteDate(date: Date, type: string): Date {
   const isoDate: Array<number> = isoDateFormatting(date)
     .split('-')

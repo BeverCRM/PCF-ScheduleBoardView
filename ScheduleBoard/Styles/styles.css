@@ -1,4 +1,4 @@
-* {
+.bvrBoard_main, .bvrBoard_main * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -26,9 +26,11 @@
 .bvrBoard_h_content div {
   display: inline-block;
 }
+
 .bvrBoard_h_content .arrowButtons {
   width: 140px;
 }
+
 .bvrBoard_h_content .arrowButtons button {
   color: #333;
   text-align: center;
@@ -43,31 +45,58 @@
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
 }
+
+.bvrBoard_viewChange {
+  float:right;
+  margin-top: 5px;
+}
+
+.bvrBoard_viewChange button {
+  color: #333;
+  text-align: center;
+  font-size: 1em !important;
+  outline: none;
+  border: none;
+  box-shadow: 0 1px 2px #888;
+  cursor: pointer;
+  border-radius: 2px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+}
+
 .bvrBoard_h_content .arrowButtons button:hover {
   background-color: #e6e6e6;
 }
+
 .bvrBoard_h_content .arrowButtons button:active {
   box-shadow: 0 1px 2px #efefef;
 }
+
 .bvrBoard_h_content .arrowButtons .arrow button {
   width: 30px;
   height: 25px;
   font-weight: bold;
 }
+
 .bvrBoard_h_content .arrowButtons .today {
   margin: 0 5px;
 }
+
 .bvrBoard_h_content .arrowButtons .today button {
   width: 60px;
   height: 25px;
   font-size: 0.8em;
 }
+
 .bvrBoard_h_content .arrowButtons .today button:disabled {
   color: #909090;
   border: none;
   background-color: #efefef;
   cursor: default;
 }
+
 .bvrBoard_h_content .period {
   width: 8.4em;
   margin-left: calc(50% - 210px);
@@ -80,27 +109,37 @@
 .bvrBoard_c_content .weekDays {
   width: 100%;
 }
+
 .bvrBoard_c_content .weekDays ul {
   width: 100%;
   padding-top: 10px;
   display: flex;
   list-style-type: none;
 }
+
 .bvrBoard_c_content .weekDays ul li {
   flex: 1;
   padding: 3px 0;
   text-align: center;
   font-weight: bold;
   border: 1px solid #cacaca;
-  border-bottom-width: 0;
   border-right-width: 0;
 }
+
 .bvrBoard_c_content .weekDays ul li:last-of-type {
   border-right-width: 1px;
 }
+
 .bvrBoard_c_content .calendar-body {
   width: 100%;
+  overflow: overlay;
+  overflow-x: hidden;
+  border: 1px solid #cacaca;
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
 }
+
 .bvrBoard_c_content .calendar-body table {
   width: 100%;
   min-height: 400px;
@@ -110,6 +149,7 @@
 .bvrBoard_row:last-of-type {
   border-bottom: 1px solid #cacaca;
 }
+
 .bvrBoard_row .day-off {
   position: relative;
   width: 14.2857142857%;
@@ -119,6 +159,7 @@
   vertical-align: top;
   background-color: #f5f5f5;
 }
+
 .bvrBoard_row .cell {
   position: relative;
   width: 14.2857142857%;
@@ -127,12 +168,15 @@
   border-right-width: 0;
   vertical-align: top;
 }
+
 .bvrBoard_row .cell:last-of-type {
   border-right-width: 1px;
 }
+
 .bvrBoard_row .cell .cell-content {
   min-height: 23px;
 }
+
 .bvrBoard_row .cell .date {
   position: absolute;
   top: 0;
@@ -141,6 +185,7 @@
   cursor: default;
   z-index: 10;
 }
+
 .bvrBoard_row .cell .day-of-the-surrounding-month {
   color: #a7a7a7;
 }
@@ -150,27 +195,42 @@
   padding-top: 1.5em;
   padding-bottom: 1.5em;
 }
+
 .bvrBoard_bookings .booking {
   width: 100%;
   margin: 2px 0;
   border-radius: 2px;
   position: relative;
+  display: flex;
+  margin: 5px 0;
+  line-height: 150%;
 }
+
+.bvrBoard_bookings .bookingid {
+  background-color: #383050 !important;
+}
+
 .bvrBoard_bookings .isUnreal {
   visibility: hidden;
   display: none;
 }
+
 .bvrBoard_bookings .booking:last-of-type {
   margin-bottom: 5px;
 }
+
 .bvrBoard_bookings .booking .booking-row {
   padding: 0 5px;
+  height: 21px;
 }
+
 .bvrBoard_bookings .booking .booking-row .booking-name {
   color: #f5f5f5;
   font-size: 0.9em;
   vertical-align: top;
+  cursor: default;
 }
+
 .bvrBoard_expander {
   position: absolute;
   bottom: 0;
@@ -180,12 +240,14 @@
   white-space: nowrap;
   justify-content: center;
 }
+
 .bvrBoard_expander .button {
   font-family: 'Segoe UI';
   padding: 1px;
   padding-right: 5px;
   display: inline-block;
   border: none;
+  cursor: pointer;
 }
 
 .bvrBoard_down {
@@ -208,4 +270,22 @@
   padding: 3px;
   position: relative;
   left:3px
+}
+
+.bvrBoard_vertical {
+  border-left: 1px solid lightgrey;
+  height: 100%;
+  position:absolute;
+  left: 50%;
+}
+
+.bvrBoard_Loading{
+  width: 100%;
+  justify-content: center;
+}
+
+.bvrBoard_Loading .loadingText{
+  width: 100%;
+  margin-top: 5px;
+  text-align: center;
 }
