@@ -1,6 +1,6 @@
-import { fetchSelectedMonthRecords } from '../Store/Services';
-import { CalendarDate, Record } from '../Utilities/Types';
-import { getAbsoluteDate } from '../Utilities/dateUtilities';
+import { fetchSelectedMonthRecords } from '../store/services';
+import { CalendarDate, Record } from '../utilities/types';
+import { getAbsoluteDate } from '../utilities/dateUtilities';
 
 export function getSelectedMonthBookings(
   calendarDays: Array<Array<CalendarDate>>,

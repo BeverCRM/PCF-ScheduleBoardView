@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import * as React from 'react';
 import { IInputs, IOutputs } from './generated/ManifestTypes';
-import { fetchRecordFieldSchemaNames, fetchRecords } from './Store/Services';
-import { setContext } from './Services/dataverseService';
-import { SheduleBoard, ISheduleBoardProps } from './Components/SheduleBoard';
-import { BoardSpinner } from './Components/Spinner';
+import { fetchRecordFieldSchemaNames, fetchRecords } from './store/services';
+import { setContext } from './services/dataverseService';
+import { SheduleBoard, ISheduleBoardProps } from './components/SheduleBoard';
+import { BoardSpinner } from './components/Spinner';
 
 export class ScheduleBoardView
 implements ComponentFramework.ReactControl<IInputs, IOutputs> {

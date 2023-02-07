@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { fetchSelectedMonthRecords } from '../Store/Services';
+import { fetchSelectedMonthRecords } from '../store/services';
 import { IViewOptions } from './SheduleBoard';
-import { openForm } from '../Services/dataverseService';
+import { openForm } from '../services/dataverseService';
 import { Header } from './Header';
-import { getAbsoluteDate } from '../Utilities/dateUtilities';
-import { DayHours } from '../Utilities/enums';
+import { getAbsoluteDate } from '../utilities/dateUtilities';
+import { DayHours } from '../utilities/enums';
 import Tooltip from 'react-tooltip-lite';
 
 interface IDailyView {

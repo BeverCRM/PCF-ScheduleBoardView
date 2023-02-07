@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { changeDay, changeMonth } from '../Services/SheduleBoardServices';
+import { changeDay, changeMonth } from '../services/scheduleBoardServices';
 import { IViewOptions } from './SheduleBoard';
 
 interface IHeader {
