@@ -174,9 +174,9 @@
 }
 
 .bvrBoard_row .cell .cell-content {
-
   min-height: 23px;
 }
+
 .bvrBoard_row .cell .date {
   position: absolute;
   top: 0;

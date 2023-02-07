@@ -14,7 +14,7 @@ import Tooltip from 'react-tooltip-lite';
 import { IViewOptions } from './SheduleBoard';
 import { Header } from './Header';
 import { MonthNames, WeekDays } from '../Utilities/enums';
-import { SurroundingMonthsDate } from '../Store/Types';
+import { SurroundingMonthsDate } from '../Utilities/Types';
 
 declare module 'react-tooltip-lite' {
   interface TooltipProps {
@@ -170,7 +170,8 @@ export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {
                                   setView({ monthly: false, weekly: false, daily: true });
                                   setDate(date.value);
                                 }}>
-                                { date.bookings.length > 5 ? 'Show More'
+                                { date.bookings.length > 5
+                                  ? 'Show More'
                                   : date.bookings.length >= 1
                                     ? 'Daily View'
                                     : '' }

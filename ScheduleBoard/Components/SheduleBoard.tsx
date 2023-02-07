@@ -3,9 +3,9 @@ import { DailyView } from './DailyView';
 import { MonthlyView } from './MonthlyView';
 import { Provider } from 'react-redux';
 import { store } from '../Store/Store';
-import { CalendarDate } from '../Store/Types';
+import { CalendarDate } from '../Utilities/Types';
 
-export interface SheduleBoardTime {
+export interface ISheduleBoardProps {
   onChange: (date: Date | null) => void;
   currentDate: Date;
   calendarDays: CalendarDate[][];
@@ -17,7 +17,7 @@ export interface IViewOptions {
   daily: boolean;
 }
 
-export const SheduleBoard: React.FunctionComponent<SheduleBoardTime> = props => {
+export const SheduleBoard: React.FunctionComponent<ISheduleBoardProps> = props => {
   const { currentDate } = props;
   const defaultView: IViewOptions = {
     monthly: true,

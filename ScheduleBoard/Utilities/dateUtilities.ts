@@ -1,4 +1,4 @@
-import { CalendarDate, SurroundingMonthsDate } from '../Store/Types';
+import { CalendarDate, SurroundingMonthsDate } from './Types';
 
 /**
  * * Get days of the selected month by month number and year

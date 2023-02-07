@@ -47,5 +47,5 @@ export enum DayHours {
   Twenty = '20:00',
   TwentyOne = '21:00',
   TwentyTwo = '22:00',
-  TwentyThree= '23:00',
+  TwentyThree = '23:00',
 }

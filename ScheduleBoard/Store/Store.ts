@@ -1,6 +1,6 @@
 import { configureStore, createSlice, getDefaultMiddleware, PayloadAction } from '@reduxjs/toolkit';
-import { CalendarDate, IState, SchemaNames } from './Types';
-import { Record } from './Types';
+import { CalendarDate, IState, SchemaNames } from '../Utilities/Types';
+import { Record } from '../Utilities/Types';
 import { setAutoFreeze } from 'immer';
 
 const initialState: IState = {

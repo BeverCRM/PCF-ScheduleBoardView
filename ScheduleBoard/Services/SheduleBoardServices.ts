@@ -1,5 +1,5 @@
 import { fetchSelectedMonthRecords } from '../Store/Services';
-import { CalendarDate, Record } from '../Store/Types';
+import { CalendarDate, Record } from '../Utilities/Types';
 import { getAbsoluteDate } from '../Utilities/dateUtilities';
 
 export function getSelectedMonthBookings(

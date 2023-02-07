@@ -3,10 +3,10 @@ import * as React from 'react';
 import { IInputs, IOutputs } from './generated/ManifestTypes';
 import { fetchRecordFieldSchemaNames, fetchRecords } from './Store/Services';
 import { setContext } from './Services/dataverseService';
-import { SheduleBoard, SheduleBoardTime } from './Components/SheduleBoard';
+import { SheduleBoard, ISheduleBoardProps } from './Components/SheduleBoard';
 import { BoardSpinner } from './Components/Spinner';
 
-export class BvrScheduleBoardViewControl
+export class ScheduleBoardView
 implements ComponentFramework.ReactControl<IInputs, IOutputs> {
   private Component: ComponentFramework.ReactControl<IInputs, IOutputs>;
   private notifyOutputChanged: () => void;
@@ -38,6 +38,7 @@ implements ComponentFramework.ReactControl<IInputs, IOutputs> {
     ];
     fetchRecordFieldSchemaNames(this.recordFieldSchemaNames);
     setContext(context);
+    // context.mode.trackContainerResize(true);
   }
 
   /**
@@ -66,7 +67,7 @@ implements ComponentFramework.ReactControl<IInputs, IOutputs> {
         const { records } = context.parameters.DataSet;
         fetchRecords(records);
 
-        const props: SheduleBoardTime = {
+        const props: ISheduleBoardProps = {
           currentDate: new Date(),
           calendarDays: [],
           onChange: this.notifyOutputChanged,
