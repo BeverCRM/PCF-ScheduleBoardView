@@ -1,7 +1,7 @@
-import { randomColor } from '../Utilities/utilities';
+import { randomColor } from '../utilities/utilities';
 import { useAppSelector } from './hooks';
-import { store, setRecords, setRecordFieldSchemaNames } from './Store';
-import { Record, SchemaNames } from '../Utilities/Types';
+import { store, setRecords, setRecordFieldSchemaNames } from './store';
+import { Record, SchemaNames } from '../utilities/types';
 
 export function fetchRecordFieldSchemaNames(inputSchemaNames: Array<String | null>) {
   const schemaNames: SchemaNames = {

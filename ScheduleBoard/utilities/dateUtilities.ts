@@ -1,4 +1,4 @@
-import { CalendarDate, SurroundingMonthsDate } from './Types';
+import { CalendarDate, SurroundingMonthsDate } from './types';
 
 /**
  * * Get days of the selected month by month number and year

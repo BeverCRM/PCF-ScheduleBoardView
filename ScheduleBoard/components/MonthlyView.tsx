@@ -3,18 +3,18 @@ import { ReactNode } from 'react';
 import {
   generateCalendarDates,
   getSelectedMonthBookings,
-} from '../Services/SheduleBoardServices';
-import { openForm } from '../Services/dataverseService';
+} from '../services/scheduleBoardServices';
+import { openForm } from '../services/dataverseService';
 import {
   combineDates,
   getDaysOfSelectedMonth,
   getDaysOfSurroundingMonths,
-} from '../Utilities/dateUtilities';
+} from '../utilities/dateUtilities';
 import Tooltip from 'react-tooltip-lite';
 import { IViewOptions } from './SheduleBoard';
 import { Header } from './Header';
-import { MonthNames, WeekDays } from '../Utilities/enums';
-import { SurroundingMonthsDate } from '../Utilities/Types';
+import { MonthNames, WeekDays } from '../utilities/enums';
+import { SurroundingMonthsDate } from '../utilities/types';
 
 declare module 'react-tooltip-lite' {
   interface TooltipProps {

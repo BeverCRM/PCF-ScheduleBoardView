@@ -2,8 +2,8 @@ import * as React from 'react';
 import { DailyView } from './DailyView';
 import { MonthlyView } from './MonthlyView';
 import { Provider } from 'react-redux';
-import { store } from '../Store/Store';
-import { CalendarDate } from '../Utilities/Types';
+import { store } from '../store/store';
+import { CalendarDate } from '../utilities/types';
 
 export interface ISheduleBoardProps {
   onChange: (date: Date | null) => void;
