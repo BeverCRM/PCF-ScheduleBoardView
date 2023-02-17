@@ -16,7 +16,7 @@ export function getSelectedMonthBookings(
 function prefillEmptySpaceWithBooking(
   item: CalendarDate,
   currentDayBookings: Record[],
-  topIndex:number) {
+  topIndex: number) {
   const temporaryArray = [...item.bookings];
   let b = 0;
   for (let k = 0; k < topIndex; ++k) {
@@ -47,8 +47,8 @@ function prefillEmptySpaceWithBooking(
 function getAllBookingsFromPreviousDays(
   item: CalendarDate,
   bookings: Record[],
-  defaultBookingIndex:number,
-  topIndex:number) : number {
+  defaultBookingIndex: number,
+  topIndex:number): number {
   for (const booking of bookings) {
     if (
       getAbsoluteDate(item.value, 'END') >= new Date(booking.start) &&
@@ -67,11 +67,11 @@ function getAllBookingsFromPreviousDays(
 }
 
 function getNewBookingsFromCurrentDay(
-  item:CalendarDate,
+  item: CalendarDate,
   bookings: Record[],
-  currentDayBookings:Record[],
-  defaultBookingIndex:number,
-  maxBookingsCount:number,
+  currentDayBookings: Record[],
+  defaultBookingIndex: number,
+  maxBookingsCount: number,
 ) {
   for (const booking of bookings) {
     if (

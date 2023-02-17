@@ -23,6 +23,5 @@ export type SchemaNames = { name: string, startDate: string, endDate: string };
 
 export interface IState {
   records: Record[];
-  selectedMonthRecords: CalendarDate[][];
   recordFieldSchemaNames: SchemaNames;
 }

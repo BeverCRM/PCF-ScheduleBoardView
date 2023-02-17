@@ -1,9 +1,8 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CalendarDate, IState, SchemaNames, Record } from '../utilities/types';
+import { IState, SchemaNames, Record } from '../utilities/types';
 
 const initialState: IState = {
   records: new Array<Record>(),
-  selectedMonthRecords: new Array<Array<CalendarDate>>(),
   recordFieldSchemaNames: { name: '', startDate: '', endDate: '' },
 };
 
