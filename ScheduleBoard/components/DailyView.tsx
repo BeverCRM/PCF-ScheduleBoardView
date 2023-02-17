@@ -72,6 +72,9 @@ export const DailyView: React.FunctionComponent<IDailyView> = props => {
   React.useEffect(() => {
     window.addEventListener('resize', changeSize);
     changeSize();
+    return () => {
+      window.removeEventListener('resize', changeSize);
+    };
   }, []);
 
   return (
@@ -119,11 +122,13 @@ export const DailyView: React.FunctionComponent<IDailyView> = props => {
                       <tr key={j}
                         className={ 'booking'}
                         id = {`booking${j}`}
-                        style={ calculateBookingWidth(booking.start, booking.end) === '0%'
+                        style={ calculateBookingWidth(new Date(booking.start),
+                          new Date(booking.end)) === '0%'
                           ? { display: 'none' }
                           : { backgroundColor: booking.color,
-                            width: calculateBookingWidth(booking.start, booking.end),
-                            marginLeft: calculateBookingMargin(booking.start),
+                            width: calculateBookingWidth(new Date(booking.start),
+                              new Date(booking.end)),
+                            marginLeft: calculateBookingMargin(new Date(booking.start)),
                             height: '21px' }}
                         onClick={() => openForm(booking.id)}
                         onMouseEnter={ e => {
@@ -138,8 +143,8 @@ export const DailyView: React.FunctionComponent<IDailyView> = props => {
                             content={
                               <ul style={{ listStyleType: 'none', padding: 0 }}>
                                 <li>{booking.name}</li>
-                                <li>{booking.start.toLocaleString()}</li>
-                                <li>{booking.end.toLocaleString()}</li>
+                                <li>{new Date(booking.start).toLocaleString()}</li>
+                                <li>{new Date(booking.end).toLocaleString()}</li>
                               </ul>
                             }
 

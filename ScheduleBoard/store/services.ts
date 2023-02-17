@@ -13,6 +13,19 @@ export function fetchRecordFieldSchemaNames(inputSchemaNames: Array<String | nul
   store.dispatch(setRecordFieldSchemaNames(schemaNames));
 }
 
+function recordInSelectedMonth(
+  item:Record,
+  inputDate: {
+  start: Date,
+  end: Date,
+}): boolean {
+  return (
+    (new Date(item.start) < inputDate.start && new Date(item.end) > inputDate.end) ||
+    (new Date(item.start) >= inputDate.start && new Date(item.start) <= inputDate.end) ||
+    (new Date(item.end) >= inputDate.start && new Date(item.end) <= inputDate.end)
+  );
+}
+
 export function fetchSelectedMonthRecords(inputDate: {
   start: Date,
   end: Date,
@@ -20,11 +33,7 @@ export function fetchSelectedMonthRecords(inputDate: {
   const data: Record[] = [];
   const records = useAppSelector(store => store.records);
   records.forEach(item => {
-    if (
-      (item.start < inputDate.start && item.end > inputDate.end) ||
-      (item.start >= inputDate.start && item.start <= inputDate.end) ||
-      (item.end >= inputDate.start && item.end <= inputDate.end)
-    ) {
+    if (recordInSelectedMonth(item, inputDate)) {
       data.push(item);
     }
   });
@@ -43,12 +52,12 @@ export function fetchRecords(inputRecords: InputRecords) {
     const item: Record = {
       id: ID,
       name: <string>record.getValue(schemaNames.name),
-      start: new Date(<string>(record.getValue(schemaNames.startDate))),
-      end: new Date(<string>(record.getValue(schemaNames.endDate))),
+      start: new Date(<string>(record.getValue(schemaNames.startDate))).getTime(),
+      end: new Date(<string>(record.getValue(schemaNames.endDate))).getTime(),
       color: randomColor(),
       index: -1,
     };
-    if (item.start.getTime() < item.end.getTime()) {
+    if (item.start < item.end) {
       data.push(item);
     }
   }

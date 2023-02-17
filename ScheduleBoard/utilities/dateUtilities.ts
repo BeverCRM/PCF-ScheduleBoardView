@@ -1,34 +1,19 @@
 import { CalendarDate, SurroundingMonthsDate } from './types';
 
-/**
- * * Get days of the selected month by month number and year
- * * Returns an array of Date objects
- * @param month type[`number`] Month number in the calendar (0-11)
- * @param year type[`number`] Year in the calendar
-*/
 export function getDaysOfSelectedMonth(
   month: number,
   year: number,
-): Array<Date> {
-  const days: Array<Date> = [];
-
-  let i = 1;
-  let date = new Date(year, month, i);
-
+): Date[] {
+  const days: Date[] = [];
+  let date = new Date(year, month, 1);
   while (date.getMonth() === month) {
     days.push(date);
-    date = new Date(year, month, ++i);
+    date = new Date(year, month, date.getDate() + 1);
   }
 
   return days;
 }
 
-/**
-  * * Get the days of the surrounding months
-  * * Returns an object SurroundingMonthsDate
-  * @param startDate type[`Date`] Calendar start date
-  * @param endDate type[`Date`] Calendar end date
-*/
 export function getDaysOfSurroundingMonths(
   startDate: Date,
   endDate: Date,
@@ -56,64 +41,47 @@ export function getDaysOfSurroundingMonths(
   return days;
 }
 
-/**
-  * * Generate calendar dates by selected and surrounding months
-  * * Returns an array of Array\<CalendarDate\>
-  * @param daysOfTheSelectedMonth type[`Date[]`] Array of days of the selected month
-  * @param daysOfTheSurroundingMonths type[`Date[]`]  Array of days of the surrounding months
-*/
+function addCalendarDateIntoCombinedDates(
+  combinedDates: CalendarDate[][],
+  item: Date,
+  isTheItemOfTheSelectedMonth: boolean,
+) {
+  const calendarDate: CalendarDate = {
+    value: item,
+    day: item.getDate().toString(),
+    isTheItemOfTheSelectedMonth,
+    bookings: [],
+  };
+
+  combinedDates[combinedDates.length - 1].push(calendarDate);
+}
+
 export function combineDates(
-  daysOfSelectedMonth: Array<Date>,
+  daysOfSelectedMonth: Date[],
   daysOfSurroundingMonths: SurroundingMonthsDate,
-): Array<Array<CalendarDate>> {
-  const combinedDates: Array<Array<CalendarDate>> = [];
+): CalendarDate[][] {
+  const combinedDates: CalendarDate[][] = [];
   combinedDates.push([]);
+  const weekDaysCount = 7;
 
   daysOfSurroundingMonths.previousMonthDays.forEach(item => {
-    const calendarDate: CalendarDate = {
-      value: item,
-      day: item.getDate().toString(),
-      isTheItemOfTheSelectedMonth: false,
-      bookings: [],
-    };
-
-    combinedDates[0].push(calendarDate);
+    addCalendarDateIntoCombinedDates(combinedDates, item, false);
   });
 
   daysOfSelectedMonth.forEach(item => {
-    if (combinedDates[combinedDates.length - 1].length === 7) {
+    if (combinedDates[combinedDates.length - 1].length === weekDaysCount) {
       combinedDates.push([]);
     }
-
-    const calendarDate: CalendarDate = {
-      value: item,
-      day: item.getDate().toString(),
-      isTheItemOfTheSelectedMonth: true,
-      bookings: [],
-    };
-
-    combinedDates[combinedDates.length - 1].push(calendarDate);
+    addCalendarDateIntoCombinedDates(combinedDates, item, true);
   });
 
   daysOfSurroundingMonths.nextMonthDays.forEach(item => {
-    const calendarDate: CalendarDate = {
-      value: item,
-      day: item.getDate().toString(),
-      isTheItemOfTheSelectedMonth: false,
-      bookings: [],
-    };
-
-    combinedDates[combinedDates.length - 1].push(calendarDate);
+    addCalendarDateIntoCombinedDates(combinedDates, item, false);
   });
 
   return combinedDates;
 }
 
-/**
-  * * Converting the date to iso string
-  * * Returns a date isoString
-  * @param date type[`Date`] Date to convert iso format
-*/
 export function isoDateFormatting(date: Date | string): string {
   const d = new Date(date);
   if (d.toString() === 'Invalid Date') return 'Invalid Date';
@@ -130,7 +98,7 @@ export function isoDateFormatting(date: Date | string): string {
   * @param type type[`string`] Type for choosing the date with 00:00:00(`START`) time or with 23:59:59(`END`) time
 */
 export function getAbsoluteDate(date: Date, type: string): Date {
-  const isoDate: Array<number> = isoDateFormatting(date)
+  const isoDate: number[] = isoDateFormatting(date)
     .split('-')
     .map(value => Number(value));
   let newDate: Date = new Date('');

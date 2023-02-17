@@ -13,8 +13,8 @@ export type CalendarDate = {
 export type Record = {
   id: string;
   name: string;
-  start: Date;
-  end: Date;
+  start: number;
+  end: number;
   color: string;
   index: number;
 };

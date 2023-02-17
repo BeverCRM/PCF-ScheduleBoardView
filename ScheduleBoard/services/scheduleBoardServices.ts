@@ -3,112 +3,135 @@ import { CalendarDate, Record } from '../utilities/types';
 import { getAbsoluteDate } from '../utilities/dateUtilities';
 
 export function getSelectedMonthBookings(
-  calendarDays: Array<Array<CalendarDate>>,
-): Array<Record> {
+  calendarDays: CalendarDate[][],
+): Record[] {
+  const calendarRowMaxIndex = 6;
   const startDate = getAbsoluteDate(calendarDays[0][0].value, 'START');
-  const endDate = getAbsoluteDate(calendarDays[calendarDays.length - 1][6].value, 'END');
+  const endDate = getAbsoluteDate(
+    calendarDays[calendarDays.length - 1][calendarRowMaxIndex].value, 'END');
   const bookings = fetchSelectedMonthRecords({ start: startDate, end: endDate });
   return bookings;
 }
 
-/**
- * * Generate calendar dates by selected and surrounding months
- * * Returns an array of Array\<CalendarDate\>
- * @param daysOfTheSelectedMonth type[`Date[]`] Array of days of the selected month
- * @param daysOfTheSurroundingMonths type[`Date[]`]  Array of days of the surrounding months
-*/
-export function generateCalendarDates(
-  combineDates: Array<Array<CalendarDate>>,
-  _bookings: Array<Record>,
-): Array<Array<CalendarDate>> {
-  const generatedDates: CalendarDate[][] = [...combineDates];
-  const bookings:Record[] = _bookings.map(k => ({ ...k }));
-  let previousItem: CalendarDate | undefined;
+function prefillEmptySpaceWithBooking(
+  item: CalendarDate,
+  currentDayBookings: Record[],
+  topIndex:number) {
+  const temporaryArray = [...item.bookings];
+  let b = 0;
+  for (let k = 0; k < topIndex; ++k) {
+    if (item.bookings[b]?.index !== k) {
+      let record:Record;
+      if (currentDayBookings.length !== 0) {
+        record = currentDayBookings.shift()!;
+      }
+      else {
+        record = {
+          id: '1',
+          name: 'undefined',
+          start: new Date().getTime(),
+          end: new Date().getTime(),
+          color: '#FFFFFF',
+          index: 0,
+        };
+      }
+      temporaryArray.splice(k, 0, record);
+    }
+    else {
+      ++b;
+    }
+  }
+  item.bookings = temporaryArray.concat(currentDayBookings);
+}
 
-  bookings.forEach(booking => {
-    booking.index = -1;
-  });
+function getAllBookingsFromPreviousDays(
+  item: CalendarDate,
+  bookings: Record[],
+  defaultBookingIndex:number,
+  topIndex:number) : number {
+  for (const booking of bookings) {
+    if (
+      getAbsoluteDate(item.value, 'END') >= new Date(booking.start) &&
+      getAbsoluteDate(item.value, 'START') <= new Date(booking.end) &&
+      booking.start < booking.end
+    ) {
+      if (booking.index !== defaultBookingIndex) {
+        item.bookings.push(booking);
+        if (topIndex <= booking.index) {
+          topIndex = booking.index + 1;
+        }
+      }
+    }
+  }
+  return topIndex;
+}
+
+function getNewBookingsFromCurrentDay(
+  item:CalendarDate,
+  bookings: Record[],
+  currentDayBookings:Record[],
+  defaultBookingIndex:number,
+  maxBookingsCount:number,
+) {
+  for (const booking of bookings) {
+    if (
+      getAbsoluteDate(item.value, 'END') >= new Date(booking.start) &&
+      getAbsoluteDate(item.value, 'START') <= new Date(booking.end)
+    ) {
+      if (booking.index === defaultBookingIndex) {
+        currentDayBookings.push(booking);
+      }
+    }
+    if (currentDayBookings.length >= maxBookingsCount) {
+      break;
+    }
+  }
+}
+
+export function generateCalendarDates(
+  combineDates: CalendarDate[][],
+  _bookings: Record[],
+): CalendarDate[][] {
+  const generatedDates: CalendarDate[][] = [...combineDates];
+  const defaultBookingIndex = -1;
+  const bookings: Record[] = _bookings.map(k => ({ ...k, index: defaultBookingIndex }));
+  let previousItem: CalendarDate | undefined;
+  const maxBookingsCount = 6;
 
   generatedDates.forEach(week => {
     week.forEach(item => {
-      const currentDayBookings = new Array<Record>();
-      let i = 0;
-      let j = 0;
+      const currentDayBookings: Record[] = [];
+      let topIndex = 0;
 
-      for (const booking of bookings) {
-        if (
-          getAbsoluteDate(item.value, 'END') >= booking.start &&
-          getAbsoluteDate(item.value, 'START') <= booking.end &&
-          booking.start.getTime() < booking.end.getTime()
-        ) {
-          if (booking.index !== -1) {
-            item.bookings.push(booking);
-            if (i <= booking.index) {
-              i = booking.index + 1;
-            }
-          }
-        }
-      }
+      topIndex = getAllBookingsFromPreviousDays(item, bookings, defaultBookingIndex, topIndex);
 
-      for (const booking of bookings) {
-        if (
-          getAbsoluteDate(item.value, 'END') >= booking.start &&
-          getAbsoluteDate(item.value, 'START') <= booking.end
-        ) {
-          if (booking.index === -1) {
-            currentDayBookings.push(booking);
-          }
-        }
-        if (currentDayBookings.length >= 6) {
-          break;
-        }
-      }
+      getNewBookingsFromCurrentDay(item, bookings, currentDayBookings,
+        defaultBookingIndex, maxBookingsCount);
 
       item.bookings.sort((previous, next) => {
         if (previous.index > next.index) return 1;
         if (previous.index < next.index) return -1;
-        if (previous.start.getTime() > next.start.getTime()) return 1;
-        if (previous.start.getTime() < next.start.getTime()) return -1;
+        if (previous.start > next.start) return 1;
+        if (previous.start < next.start) return -1;
         return 0;
       });
 
-      item.bookings = item.bookings.slice(0, 6);
+      item.bookings = item.bookings.slice(0, maxBookingsCount);
+
       if (previousItem !== undefined) {
-        const temporaryArray = [...item.bookings];
-        let b = 0;
-        for (let k = 0; k < i; ++k) {
-          if (item.bookings[b]?.index !== k) {
-            let record:Record;
-            if (currentDayBookings.length !== 0) {
-              record = currentDayBookings.shift()!;
-            }
-            else {
-              record = {
-                id: '1',
-                name: 'undefined',
-                start: new Date(),
-                end: new Date(),
-                color: '#FFFFFF',
-                index: 0,
-              };
-            }
-            temporaryArray.splice(k, 0, record);
-          }
-          else {
-            ++b;
-          }
-        }
-        item.bookings = temporaryArray.concat(currentDayBookings);
+        prefillEmptySpaceWithBooking(item, currentDayBookings, topIndex);
       }
       else {
         item.bookings = item.bookings.concat(currentDayBookings);
       }
 
-      item.bookings.forEach(booking => {
-        booking.index = j;
-        ++j;
-      });
+      for (let i = 0; i < item.bookings.length; i++) {
+        item.bookings[i].index = i;
+      }
 
+      for (const booking of item.bookings) {
+        booking;
+      }
       if (item.value.getDay() === 0) {
         previousItem = undefined;
       }
@@ -120,45 +143,43 @@ export function generateCalendarDates(
   return generatedDates;
 }
 
-/**
- * * Change rendered month based on direction
- * * Returns date of the month
- * @param direction type 'string' diraction to go(back or forth)
- * @param date type 'Date' current date
-*/
 export function changeMonth(
-  direction: string | undefined,
+  direction: string,
   date: Date,
 ): Date {
   let changedDate: Date = new Date(date);
 
-  if (direction === 'BACK') {
-    changedDate.setMonth(changedDate.getMonth() - 1);
-  }
-  else if (direction === 'FORWARD') {
-    changedDate.setMonth(changedDate.getMonth() + 1);
-  }
-  else {
-    changedDate = new Date();
+  switch (direction) {
+    case 'BACK':
+      changedDate.setMonth(changedDate.getMonth() - 1);
+      break;
+    case 'FORWARD':
+      changedDate.setMonth(changedDate.getMonth() + 1);
+      break;
+    case 'TODAY':
+      changedDate = new Date();
+      break;
   }
 
   return changedDate;
 }
 
 export function changeDay(
-  direction: string | undefined,
+  direction: string,
   date: Date,
 ): Date {
   let changedDate: Date = new Date(date);
 
-  if (direction === 'BACK') {
-    changedDate.setDate(changedDate.getDate() - 1);
-  }
-  else if (direction === 'FORWARD') {
-    changedDate.setDate(changedDate.getDate() + 1);
-  }
-  else {
-    changedDate = new Date();
+  switch (direction) {
+    case 'BACK':
+      changedDate.setDate(changedDate.getDate() - 1);
+      break;
+    case 'FORWARD':
+      changedDate.setDate(changedDate.getDate() + 1);
+      break;
+    case 'TODAY':
+      changedDate = new Date();
+      break;
   }
 
   return changedDate;
