@@ -8,17 +8,13 @@ import { BoardSpinner } from './components/Spinner';
 
 export class ScheduleBoardView
 implements ComponentFramework.ReactControl<IInputs, IOutputs> {
-  private Component: ComponentFramework.ReactControl<IInputs, IOutputs>;
-  private notifyOutputChanged: () => void;
   private recordFieldSchemaNames: Array<string | null>;
 
   constructor() {}
 
   public init(
     context: ComponentFramework.Context<IInputs>,
-    notifyOutputChanged: () => void,
   ): void {
-    this.notifyOutputChanged = notifyOutputChanged;
     this.recordFieldSchemaNames = context.parameters.DataSet.columns.map(
       item => item.name,
     );
