@@ -43,12 +43,12 @@ export function getDaysOfSurroundingMonths(
 
 function addCalendarDateIntoCombinedDates(
   combinedDates: CalendarDate[][],
-  item: Date,
+  date: Date,
   isTheItemOfTheSelectedMonth: boolean,
 ) {
   const calendarDate: CalendarDate = {
-    value: item,
-    day: item.getDate().toString(),
+    value: date,
+    day: date.getDate().toString(),
     isTheItemOfTheSelectedMonth,
     bookings: [],
   };
@@ -64,19 +64,19 @@ export function combineDates(
   combinedDates.push([]);
   const weekDaysCount = 7;
 
-  daysOfSurroundingMonths.previousMonthDays.forEach(item => {
-    addCalendarDateIntoCombinedDates(combinedDates, item, false);
+  daysOfSurroundingMonths.previousMonthDays.forEach(date => {
+    addCalendarDateIntoCombinedDates(combinedDates, date, false);
   });
 
-  daysOfSelectedMonth.forEach(item => {
+  daysOfSelectedMonth.forEach(date => {
     if (combinedDates[combinedDates.length - 1].length === weekDaysCount) {
       combinedDates.push([]);
     }
-    addCalendarDateIntoCombinedDates(combinedDates, item, true);
+    addCalendarDateIntoCombinedDates(combinedDates, date, true);
   });
 
-  daysOfSurroundingMonths.nextMonthDays.forEach(item => {
-    addCalendarDateIntoCombinedDates(combinedDates, item, false);
+  daysOfSurroundingMonths.nextMonthDays.forEach(date => {
+    addCalendarDateIntoCombinedDates(combinedDates, date, false);
   });
 
   return combinedDates;

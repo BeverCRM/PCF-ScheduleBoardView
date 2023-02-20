@@ -11,7 +11,7 @@ import {
   getDaysOfSurroundingMonths,
 } from '../utilities/dateUtilities';
 import Tooltip from 'react-tooltip-lite';
-import { IViewOptions } from './SheduleBoard';
+import { IViewOptions } from './ScheduleBoard';
 import { Header } from './Header';
 import { MonthNames, WeekDays } from '../utilities/enums';
 import { SurroundingMonthsDate } from '../utilities/types';

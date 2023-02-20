@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { fetchSelectedMonthRecords } from '../store/services';
-import { IViewOptions } from './SheduleBoard';
+import { IViewOptions } from './ScheduleBoard';
 import { openForm } from '../services/dataverseService';
 import { Header } from './Header';
 import { getAbsoluteDate } from '../utilities/dateUtilities';

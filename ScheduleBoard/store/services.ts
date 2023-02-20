@@ -14,7 +14,7 @@ export function fetchRecordFieldSchemaNames(inputSchemaNames: Array<String | nul
 }
 
 function recordInSelectedMonth(
-  item:Record,
+  item: Record,
   inputDate: {
   start: Date,
   end: Date,

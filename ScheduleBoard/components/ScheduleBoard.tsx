@@ -14,7 +14,7 @@ export interface IViewOptions {
   daily: boolean;
 }
 
-export const SheduleBoard: React.FunctionComponent<IScheduleBoardProps> = props => {
+export const ScheduleBoard: React.FunctionComponent<IScheduleBoardProps> = props => {
   const { currentDate } = props;
   const defaultView: IViewOptions = {
     monthly: true,

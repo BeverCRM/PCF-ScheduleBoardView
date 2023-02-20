@@ -89,10 +89,10 @@ function getNewBookingsFromCurrentDay(
 }
 
 export function generateCalendarDates(
-  combineDates: CalendarDate[][],
+  combinedDates: CalendarDate[][],
   _bookings: Record[],
 ): CalendarDate[][] {
-  const generatedDates: CalendarDate[][] = [...combineDates];
+  const generatedDates: CalendarDate[][] = [...combinedDates];
   const defaultBookingIndex = -1;
   const bookings: Record[] = _bookings.map(k => ({ ...k, index: defaultBookingIndex }));
   let previousItem: CalendarDate | undefined;
