@@ -3,13 +3,11 @@ import * as React from 'react';
 import { IInputs, IOutputs } from './generated/ManifestTypes';
 import { fetchRecordFieldSchemaNames, fetchRecords } from './store/services';
 import { setContext } from './services/dataverseService';
-import { SheduleBoard, ISheduleBoardProps } from './components/SheduleBoard';
+import { ScheduleBoard, IScheduleBoardProps } from './components/ScheduleBoard';
 import { BoardSpinner } from './components/Spinner';
 
 export class ScheduleBoardView
 implements ComponentFramework.ReactControl<IInputs, IOutputs> {
-  private Component: ComponentFramework.ReactControl<IInputs, IOutputs>;
-  private notifyOutputChanged: () => void;
   private recordFieldSchemaNames: Array<string | null>;
 
   constructor() {}
@@ -25,9 +23,7 @@ implements ComponentFramework.ReactControl<IInputs, IOutputs> {
 
   public init(
     context: ComponentFramework.Context<IInputs>,
-    notifyOutputChanged: () => void,
   ): void {
-    this.notifyOutputChanged = notifyOutputChanged;
     this.recordFieldSchemaNames = context.parameters.DataSet.columns.map(
       item => item.name,
     );
@@ -38,64 +34,35 @@ implements ComponentFramework.ReactControl<IInputs, IOutputs> {
     ];
     fetchRecordFieldSchemaNames(this.recordFieldSchemaNames);
     setContext(context);
-    // context.mode.trackContainerResize(true);
   }
-
-  /**
-   * Called when any value in the property bag has changed. This includes field values, data-sets, global values such as container height and width, offline status, control metadata values such as label, visible, etc.
-   * @param context The entire property bag available to control via Context Object; It contains values as set up by the customizer mapped to names defined in the manifest, as well as utility functions
-  */
 
   public updateView(
     context: ComponentFramework.Context<IInputs>,
   ): React.ReactElement {
     if (!context.parameters.DataSet.loading) {
-
       if (context.parameters.DataSet.paging !== null &&
         context.parameters.DataSet.paging.hasNextPage === true) {
-
-        // set page size
-
         context.parameters.DataSet.paging.setPageSize(5000);
-
-        // load next paging
-
         context.parameters.DataSet.paging.loadNextPage();
-
       }
       else {
         const { records } = context.parameters.DataSet;
         fetchRecords(records);
 
-        const props: ISheduleBoardProps = {
+        const props: IScheduleBoardProps = {
           currentDate: new Date(),
-          calendarDays: [],
-          onChange: this.notifyOutputChanged,
         };
 
-        return React.createElement(SheduleBoard, props);
-        // this.notifyOutputChanged();
-        // return element;
-
+        return React.createElement(ScheduleBoard, props);
       }
     }
     return React.createElement(BoardSpinner);
 
   }
 
-  /**
-   * It is called by the framework prior to a control receiving new data.
-   * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as “bound” or “output”
-  */
-
   public getOutputs(): IOutputs {
     return {};
   }
-
-  /**
-   * Called when the control is to be removed from the DOM tree. Controls should use this call for cleanup.
-   * i.e. cancelling any pending remote calls, removing listeners, etc.
-  */
 
   public destroy(): void {
   }

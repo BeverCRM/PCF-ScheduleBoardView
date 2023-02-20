@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { changeDay, changeMonth } from '../services/scheduleBoardServices';
-import { IViewOptions } from './SheduleBoard';
+import { IViewOptions } from './ScheduleBoard';
 
 interface IHeader {
     setDate: (date: Date) => void;
@@ -17,7 +17,7 @@ interface IHeader {
 export const Header: React.FunctionComponent<IHeader> = props => {
   const { setDate, changeSize, title, setView, date, buttonName,
     currentButtonisDisabled, option, viewOptions } = props;
-  let changeMonthOrDay: (direction: string | undefined, date: Date) => Date;
+  let changeMonthOrDay: (direction: string, date: Date) => Date;
   switch (option) {
     case 'day': {
       changeMonthOrDay = changeDay;
@@ -53,7 +53,7 @@ export const Header: React.FunctionComponent<IHeader> = props => {
           <span
             className="today"
             onClick={() => {
-              setDate(changeMonthOrDay(undefined, date));
+              setDate(changeMonthOrDay('TODAY', date));
               changeSize();
             }}
           >

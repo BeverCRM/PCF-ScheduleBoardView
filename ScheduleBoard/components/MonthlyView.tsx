@@ -11,7 +11,7 @@ import {
   getDaysOfSurroundingMonths,
 } from '../utilities/dateUtilities';
 import Tooltip from 'react-tooltip-lite';
-import { IViewOptions } from './SheduleBoard';
+import { IViewOptions } from './ScheduleBoard';
 import { Header } from './Header';
 import { MonthNames, WeekDays } from '../utilities/enums';
 import { SurroundingMonthsDate } from '../utilities/types';
@@ -31,7 +31,7 @@ interface IMonthlyView {
 export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {
   const { date, setDate, setView } = props;
   const calendarBodyRef = React.useRef<HTMLDivElement>(null);
-  const daysOfTheSelectedMonth: Array<Date> = getDaysOfSelectedMonth(
+  const daysOfTheSelectedMonth: Date[] = getDaysOfSelectedMonth(
     date.getMonth(),
     date.getFullYear(),
   );
@@ -69,6 +69,9 @@ export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {
 
   React.useEffect(() => {
     window.addEventListener('resize', changeSize);
+    return () => {
+      window.removeEventListener('resize', changeSize);
+    };
   }, []);
 
   return (
@@ -118,8 +121,8 @@ export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {
                                   content={
                                     <ul style={{ listStyleType: 'none', padding: 0 }}>
                                       <li>{booking.name}</li>
-                                      <li>{booking.start.toLocaleString()}</li>
-                                      <li>{booking.end.toLocaleString()}</li>
+                                      <li>{new Date(booking.start).toLocaleString()}</li>
+                                      <li>{new Date(booking.end).toLocaleString()}</li>
                                     </ul>
                                   }
 
@@ -164,8 +167,6 @@ export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {
                             </div>
                             <div className='bvrBoard_expander'>
                               <button className='button'
-                                // </div>style={ date.bookings.length <= 5 ? { visibility: 'hidden' }
-                                //  : { visibility: 'visible' } }
                                 onClick={() => {
                                   setView({ monthly: false, weekly: false, daily: true });
                                   setDate(date.value);
