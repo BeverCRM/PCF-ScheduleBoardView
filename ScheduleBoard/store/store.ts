@@ -3,7 +3,7 @@ import { IState, SchemaNames, Record } from '../utilities/types';
 
 const initialState: IState = {
   records: new Array<Record>(),
-  recordFieldSchemaNames: { name: '', startDate: '', endDate: '' },
+  recordFieldSchemaNames: { name: '', startDate: '', endDate: '', color: '' },
 };
 
 export const boardReducer = createSlice({

@@ -58,6 +58,10 @@
   border-radius: 2px;
 }
 
+.bvrBoard_viewChange button:hover {
+  background-color: #e6e6e6;
+}
+
 .bvrBoard_h_content .arrowButtons button:hover {
   background-color: #e6e6e6;
 }
@@ -193,7 +197,7 @@
   margin: 2px 0;
   border-radius: 2px;
   position: relative;
-  display: flex;
+  display: grid;
   margin: 5px 0;
   line-height: 150%;
 }
@@ -214,13 +218,19 @@
 .bvrBoard_bookings .booking .booking-row {
   padding: 0 5px;
   height: 21px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
 }
 
 .bvrBoard_bookings .booking .booking-row .booking-name {
   color: #f5f5f5;
   font-size: 0.9em;
-  vertical-align: top;
   cursor: default;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  white-space: nowrap;
 }
 
 .bvrBoard_expander {

@@ -121,8 +121,12 @@ export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {
                                   content={
                                     <ul style={{ listStyleType: 'none', padding: 0 }}>
                                       <li>{booking.name}</li>
-                                      <li>{new Date(booking.start).toLocaleString()}</li>
-                                      <li>{new Date(booking.end).toLocaleString()}</li>
+                                      <li>{new Date(booking.start).toLocaleTimeString([],
+                                        { year: 'numeric', month: 'numeric', day: 'numeric',
+                                          hour: '2-digit', minute: '2-digit' })}</li>
+                                      <li>{new Date(booking.end).toLocaleTimeString([],
+                                        { year: 'numeric', month: 'numeric', day: 'numeric',
+                                          hour: '2-digit', minute: '2-digit' })}</li>
                                     </ul>
                                   }
 

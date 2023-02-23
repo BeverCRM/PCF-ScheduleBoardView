@@ -129,7 +129,9 @@ export const DailyView: React.FunctionComponent<IDailyView> = props => {
                             width: calculateBookingWidth(new Date(booking.start),
                               new Date(booking.end)),
                             marginLeft: calculateBookingMargin(new Date(booking.start)),
-                            height: '21px' }}
+                            height: '21px',
+                            display: 'flex',
+                          }}
                         onClick={() => openForm(booking.id)}
                         onMouseEnter={ e => {
                           e.currentTarget.style.background = '#383050';
@@ -138,16 +140,19 @@ export const DailyView: React.FunctionComponent<IDailyView> = props => {
                           e.currentTarget.style.background = booking.color;
                         }}
                       >
-                        <div style={{ width: '100%' }}>
+                        <div style={{ width: '100%' }} id={'booking'}>
                           <Tooltip
                             content={
                               <ul style={{ listStyleType: 'none', padding: 0 }}>
                                 <li>{booking.name}</li>
-                                <li>{new Date(booking.start).toLocaleString()}</li>
-                                <li>{new Date(booking.end).toLocaleString()}</li>
+                                <li>{new Date(booking.start).toLocaleTimeString([],
+                                  { year: 'numeric', month: 'numeric', day: 'numeric',
+                                    hour: '2-digit', minute: '2-digit' })}</li>
+                                <li>{new Date(booking.end).toLocaleTimeString([],
+                                  { year: 'numeric', month: 'numeric', day: 'numeric',
+                                    hour: '2-digit', minute: '2-digit' })}</li>
                               </ul>
                             }
-
                             background={booking.color}
                             color='white'
                             styles={booking.color === '#FFFFFF'

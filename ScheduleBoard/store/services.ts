@@ -1,4 +1,4 @@
-import { randomColor } from '../utilities/utilities';
+import { getValidColor } from '../utilities/utilities';
 import { useAppSelector } from './hooks';
 import { store, setRecords, setRecordFieldSchemaNames } from './store';
 import { Record, SchemaNames } from '../utilities/types';
@@ -8,6 +8,7 @@ export function fetchRecordFieldSchemaNames(inputSchemaNames: Array<String | nul
     name: <string>inputSchemaNames[0],
     startDate: <string>inputSchemaNames[1],
     endDate: <string>inputSchemaNames[2],
+    color: <string>inputSchemaNames[3],
   };
 
   store.dispatch(setRecordFieldSchemaNames(schemaNames));
@@ -49,14 +50,16 @@ export function fetchRecords(inputRecords: InputRecords) {
   const schemaNames = store.getState().recordFieldSchemaNames;
   for (const ID in inputRecords) {
     const record = inputRecords[ID];
+    const color = getValidColor(record, schemaNames);
     const item: Record = {
       id: ID,
       name: <string>record.getValue(schemaNames.name),
       start: new Date(<string>(record.getValue(schemaNames.startDate))).getTime(),
       end: new Date(<string>(record.getValue(schemaNames.endDate))).getTime(),
-      color: randomColor(),
+      color,
       index: -1,
     };
+
     if (item.start < item.end) {
       data.push(item);
     }
