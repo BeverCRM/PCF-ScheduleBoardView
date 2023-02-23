@@ -59,20 +59,20 @@ export const Header: React.FunctionComponent<IHeader> = props => {
           >
             <button disabled={currentButtonisDisabled(date)}>Today</button>
           </span>
+          <span className="bvrBoard_viewChange"
+            style={ viewOptions.daily ? { display: 'none' }
+              : { display: 'contents' }}
+            onClick={() => {
+              setView(
+                viewOptions,
+              );
+              changeSize();
+            }}
+          >
+            <button>{buttonName}</button>
+          </span>
         </div>
         <div className="period">{title}</div>
-        <div className="bvrBoard_viewChange"
-          style={ viewOptions.daily ? { display: 'none' }
-            : { display: 'block' }}
-          onClick={() => {
-            setView(
-              viewOptions,
-            );
-            changeSize();
-          }}
-        >
-          <button>{buttonName}</button>
-        </div>
       </div>
     </div>
   );

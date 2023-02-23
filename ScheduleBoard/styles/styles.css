@@ -28,7 +28,7 @@
 }
 
 .bvrBoard_h_content .arrowButtons {
-  width: 140px;
+  width: 220px;
 }
 
 .bvrBoard_h_content .arrowButtons button {
@@ -42,23 +42,13 @@
   border-radius: 2px;
 }
 
-.bvrBoard_viewChange {
+
+.bvrBoard_h_content .arrowButtons .bvrBoard_viewChange button {
   float:right;
-  margin-top: 5px;
+  height: 25px;
 }
 
-.bvrBoard_viewChange button {
-  color: #333;
-  text-align: center;
-  font-size: 1em !important;
-  outline: none;
-  border: none;
-  box-shadow: 0 1px 2px #888;
-  cursor: pointer;
-  border-radius: 2px;
-}
-
-.bvrBoard_viewChange button:hover {
+.bvrBoard_h_content .arrowButtons .bvrBoard_viewChange button:hover {
   background-color: #e6e6e6;
 }
 
@@ -95,7 +85,7 @@
 
 .bvrBoard_h_content .period {
   width: 8.4em;
-  margin-left: calc(50% - 210px);
+  margin-left: calc(50% - 300px);
   color: #414141;
   text-align: center;
   font-size: 1.4em;
@@ -250,6 +240,7 @@
   display: inline-block;
   border: none;
   cursor: pointer;
+  border-radius: 2px;
 }
 
 .bvrBoard_down {
