@@ -19,7 +19,7 @@ export type Record = {
   index: number;
 };
 
-export type SchemaNames = { name: string, startDate: string, endDate: string };
+export type SchemaNames = { name: string, startDate: string, endDate: string, color: string };
 
 export interface IState {
   records: Record[];

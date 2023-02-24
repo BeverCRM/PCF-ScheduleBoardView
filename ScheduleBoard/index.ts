@@ -31,6 +31,7 @@ implements ComponentFramework.ReactControl<IInputs, IOutputs> {
       context.parameters.name.raw,
       context.parameters.startdate.raw,
       context.parameters.enddate.raw,
+      context.parameters.color.raw,
     ];
     fetchRecordFieldSchemaNames(this.recordFieldSchemaNames);
     setContext(context);

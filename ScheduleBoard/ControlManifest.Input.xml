@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
   <control namespace="BeverControls" constructor="ScheduleBoardView" version="1.0.0" display-name-key="BeverControls.ScheduleBoardView" description-key="This control converts any dataset that has start date and end date in its records into Shedule Board" control-type="virtual">
-    <data-set name="DataSet" display-name-key="Records"  cds-data-set-options="displayViewSelector:true">
+    <data-set name="DataSet" display-name-key="Records"  cds-data-set-options="displayViewSelector:true;displayQuickFind:true">
     </data-set>
     <property name='name' display-name-key='Name' description-key='Name' of-type='SingleLine.Text' usage='input' required='true' />
     <property name='startdate' display-name-key='Start Date' description-key='Start Date' of-type='SingleLine.Text' usage='input' required='true' />
     <property name='enddate' display-name-key='End Date' description-key='End Date' of-type='SingleLine.Text' usage='input' required='true' />
+    <property name='color' display-name-key='Color' description-key='Booking Color' of-type='SingleLine.Text' usage='input' required='false'/> 
     <resources>
       <code path="index.ts" order="1"/>
       <css  path="Styles/styles.css" order="1"/>
