@@ -1,3 +1,5 @@
+import { AnyAction, EnhancedStore, ThunkMiddleware } from '@reduxjs/toolkit';
+
 export type SurroundingMonthsDate = {
   previousMonthDays: Date[];
   nextMonthDays: Date[];
@@ -21,7 +23,25 @@ export type Record = {
 
 export type SchemaNames = { name: string, startDate: string, endDate: string, color: string };
 
+export type Store =
+EnhancedStore<IState, AnyAction, [ThunkMiddleware<IState, AnyAction, undefined>]>;
+
 export interface IState {
   records: Record[];
   recordFieldSchemaNames: SchemaNames;
+}
+
+export interface IDataverseService {
+  openForm(recordId: string): void;
+  setSchemaNames(store: Store): void;
+  isDatasetLoading(): boolean;
+}
+
+export interface IService<T> {
+  _service: T;
+}
+
+export interface IScheduleBoardProps extends IService<IDataverseService> {
+ currentDate: Date;
+ store: Store;
 }

@@ -4,7 +4,6 @@ import {
   generateCalendarDates,
   getSelectedMonthBookings,
 } from '../services/scheduleBoardServices';
-import { openForm } from '../services/dataverseService';
 import {
   combineDates,
   getDaysOfSelectedMonth,
@@ -14,7 +13,7 @@ import Tooltip from 'react-tooltip-lite';
 import { IViewOptions } from './ScheduleBoard';
 import { Header } from './Header';
 import { MonthNames, WeekDays } from '../utilities/enums';
-import { SurroundingMonthsDate } from '../utilities/types';
+import { IDataverseService, IService, Store, SurroundingMonthsDate } from '../utilities/types';
 
 declare module 'react-tooltip-lite' {
   interface TooltipProps {
@@ -22,14 +21,15 @@ declare module 'react-tooltip-lite' {
   }
 }
 
-interface IMonthlyView {
+interface IMonthlyView extends IService<IDataverseService> {
   date: Date;
   setDate: (date: Date) => void;
   setView: (view: IViewOptions) => void;
+  store: Store;
 }
 
 export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {
-  const { date, setDate, setView } = props;
+  const { date, setDate, setView, _service, store } = props;
   const calendarBodyRef = React.useRef<HTMLDivElement>(null);
   const daysOfTheSelectedMonth: Date[] = getDaysOfSelectedMonth(
     date.getMonth(),
@@ -47,7 +47,7 @@ export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {
     daysOfTheSurroundingMonths,
   );
 
-  const bookings = getSelectedMonthBookings(combinedDates);
+  const bookings = getSelectedMonthBookings(combinedDates, store);
   const days = generateCalendarDates(combinedDates, bookings);
 
   const title = `${MonthNames[date.getMonth()]} ${date.getFullYear()}`;
@@ -144,7 +144,7 @@ export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {
                                     style={{ backgroundColor: booking.color,
                                       ...booking.color === '#FFFFFF' ? { visibility: 'hidden' }
                                         : { visibility: 'visible' } }}
-                                    onClick={() => openForm(booking.id)}
+                                    onClick={() => _service.openForm(booking.id)}
                                     onMouseEnter={() => {
                                       const elems =
                                       document.getElementsByClassName(`booking${booking.id}`);

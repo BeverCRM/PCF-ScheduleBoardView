@@ -1,20 +1,21 @@
 import * as React from 'react';
 import { fetchSelectedMonthRecords } from '../store/services';
 import { IViewOptions } from './ScheduleBoard';
-import { openForm } from '../services/dataverseService';
 import { Header } from './Header';
 import { getAbsoluteDate } from '../utilities/dateUtilities';
 import { DayHours } from '../utilities/enums';
 import Tooltip from 'react-tooltip-lite';
+import { IDataverseService, IService, Store } from '../utilities/types';
 
-interface IDailyView {
+interface IDailyView extends IService<IDataverseService> {
   date: Date;
   setDate: (date: Date) => void;
   setView: (view: IViewOptions) => void;
+  store: Store;
 }
 
 export const DailyView: React.FunctionComponent<IDailyView> = props => {
-  const { date, setDate, setView } = props;
+  const { date, setDate, setView, _service, store } = props;
   const verticalLinesRef = React.useRef<HTMLDivElement>(null);
   const calendarBodyRef = React.useRef<HTMLDivElement>(null);
 
@@ -23,7 +24,7 @@ export const DailyView: React.FunctionComponent<IDailyView> = props => {
   const start = getAbsoluteDate(date, 'START');
   const end = getAbsoluteDate(date, 'END');
 
-  const bookings = fetchSelectedMonthRecords({ start, end });
+  const bookings = fetchSelectedMonthRecords({ start, end }, store);
 
   function calculateBookingWidth(startDate: Date, endDate:Date): string {
     let startDateTime = 0;
@@ -132,7 +133,7 @@ export const DailyView: React.FunctionComponent<IDailyView> = props => {
                             height: '21px',
                             display: 'flex',
                           }}
-                        onClick={() => openForm(booking.id)}
+                        onClick={() => _service.openForm(booking.id)}
                         onMouseEnter={ e => {
                           e.currentTarget.style.background = '#383050';
                         }}
