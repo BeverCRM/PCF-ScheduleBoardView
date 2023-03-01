@@ -1,15 +1,16 @@
 import { fetchSelectedMonthRecords } from '../store/services';
-import { CalendarDate, Record } from '../utilities/types';
+import { CalendarDate, Record, Store } from '../utilities/types';
 import { getAbsoluteDate } from '../utilities/dateUtilities';
 
 export function getSelectedMonthBookings(
   calendarDays: CalendarDate[][],
+  store: Store,
 ): Record[] {
   const calendarRowMaxIndex = 6;
   const startDate = getAbsoluteDate(calendarDays[0][0].value, 'START');
   const endDate = getAbsoluteDate(
     calendarDays[calendarDays.length - 1][calendarRowMaxIndex].value, 'END');
-  const bookings = fetchSelectedMonthRecords({ start: startDate, end: endDate });
+  const bookings = fetchSelectedMonthRecords({ start: startDate, end: endDate }, store);
   return bookings;
 }
 

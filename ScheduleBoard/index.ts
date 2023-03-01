@@ -1,14 +1,17 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import * as React from 'react';
 import { IInputs, IOutputs } from './generated/ManifestTypes';
-import { fetchRecordFieldSchemaNames, fetchRecords } from './store/services';
-import { setContext } from './services/dataverseService';
-import { ScheduleBoard, IScheduleBoardProps } from './components/ScheduleBoard';
-import { BoardSpinner } from './components/Spinner';
+import { fetchRecords } from './store/services';
+import { DataverseService } from './services/dataverseService';
+import { ScheduleBoard } from './components/ScheduleBoard';
+import { IDataverseService, Store } from './utilities/types';
+import { configureStore } from '@reduxjs/toolkit';
+import { boardReducer } from './store/store';
 
 export class ScheduleBoardView
 implements ComponentFramework.ReactControl<IInputs, IOutputs> {
-  private recordFieldSchemaNames: Array<string | null>;
+  private _dataverseService: IDataverseService;
+  private _store: Store;
 
   constructor() {}
 
@@ -24,41 +27,28 @@ implements ComponentFramework.ReactControl<IInputs, IOutputs> {
   public init(
     context: ComponentFramework.Context<IInputs>,
   ): void {
-    this.recordFieldSchemaNames = context.parameters.DataSet.columns.map(
-      item => item.name,
-    );
-    this.recordFieldSchemaNames = [
-      context.parameters.name.raw,
-      context.parameters.startdate.raw,
-      context.parameters.enddate.raw,
-      context.parameters.color.raw,
-    ];
-    fetchRecordFieldSchemaNames(this.recordFieldSchemaNames);
-    setContext(context);
+    this._dataverseService = new DataverseService(context);
+    this._store = configureStore({
+      reducer: boardReducer.reducer,
+    });
+    this._dataverseService.setSchemaNames(this._store);
   }
 
-  public updateView(
-    context: ComponentFramework.Context<IInputs>,
-  ): React.ReactElement {
-    if (!context.parameters.DataSet.loading) {
-      if (context.parameters.DataSet.paging !== null &&
+  public updateView(context: ComponentFramework.Context<IInputs>): React.ReactElement {
+
+    if (context.parameters.DataSet.paging !== null &&
         context.parameters.DataSet.paging.hasNextPage === true) {
-        context.parameters.DataSet.paging.setPageSize(5000);
-        context.parameters.DataSet.paging.loadNextPage();
-      }
-      else {
-        const { records } = context.parameters.DataSet;
-        fetchRecords(records);
-
-        const props: IScheduleBoardProps = {
-          currentDate: new Date(),
-        };
-
-        return React.createElement(ScheduleBoard, props);
-      }
+      context.parameters.DataSet.paging.setPageSize(5000);
+      context.parameters.DataSet.paging.loadNextPage();
     }
-    return React.createElement(BoardSpinner);
-
+    else {
+      const { records } = context.parameters.DataSet;
+      fetchRecords(records, this._store);
+    }
+    return React.createElement(ScheduleBoard, { _service: this._dataverseService,
+      store: this._store,
+      currentDate: new Date(),
+    });
   }
 
   public getOutputs(): IOutputs {

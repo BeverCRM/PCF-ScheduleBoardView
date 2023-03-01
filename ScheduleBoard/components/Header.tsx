@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { changeDay, changeMonth } from '../services/scheduleBoardServices';
-import { IViewOptions } from './ScheduleBoard';
+import { IViewOptions } from '../utilities/types';
 
 interface IHeader {
     setDate: (date: Date) => void;

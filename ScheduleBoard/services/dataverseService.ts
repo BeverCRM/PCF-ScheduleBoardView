@@ -1,19 +1,36 @@
 import { IInputs } from '../generated/ManifestTypes';
+import { fetchRecordFieldSchemaNames } from '../store/services';
+import { IDataverseService, Store } from '../utilities/types';
 
-let _context: ComponentFramework.Context<IInputs>;
-let _targetEntityType: string;
+export class DataverseService implements IDataverseService {
+  private _context: ComponentFramework.Context<IInputs>;
 
-export function setContext(context: ComponentFramework.Context<IInputs>) {
-  _context = context;
-  _targetEntityType = _context.parameters.DataSet.getTargetEntityType();
-}
+  constructor(context: ComponentFramework.Context<IInputs>) {
+    this._context = context;
+  }
 
-export function openForm(recordId: string) {
-  const entityFormOptions = {
-    entityId: recordId,
-    entityName: _targetEntityType,
-    openInNewWindow: false,
-  };
+  isDatasetLoading(): boolean {
+    return this._context.parameters.DataSet.loading;
+  }
 
-  _context.navigation.openForm(entityFormOptions);
+  public openForm(recordId: string): void {
+    const _targetEntityType = this._context.parameters.DataSet.getTargetEntityType();
+    const entityFormOptions = {
+      entityId: recordId,
+      entityName: _targetEntityType,
+      openInNewWindow: false,
+    };
+    this._context.navigation.openForm(entityFormOptions);
+  }
+
+  public setSchemaNames(store: Store): void {
+    const recordFieldSchemaNames = [
+      this._context.parameters.name.raw,
+      this._context.parameters.startdate.raw,
+      this._context.parameters.enddate.raw,
+      this._context.parameters.color.raw,
+    ];
+    fetchRecordFieldSchemaNames(recordFieldSchemaNames, store);
+  }
+
 }

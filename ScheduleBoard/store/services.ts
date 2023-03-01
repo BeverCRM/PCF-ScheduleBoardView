@@ -1,9 +1,8 @@
 import { getValidColor } from '../utilities/utilities';
-import { useAppSelector } from './hooks';
-import { store, setRecords, setRecordFieldSchemaNames } from './store';
-import { Record, SchemaNames } from '../utilities/types';
+import { setRecords, setRecordFieldSchemaNames } from './store';
+import { Record, SchemaNames, Store } from '../utilities/types';
 
-export function fetchRecordFieldSchemaNames(inputSchemaNames: Array<String | null>) {
+export function fetchRecordFieldSchemaNames(inputSchemaNames: Array<String | null>, store: Store) {
   const schemaNames: SchemaNames = {
     name: <string>inputSchemaNames[0],
     startDate: <string>inputSchemaNames[1],
@@ -30,9 +29,9 @@ function recordInSelectedMonth(
 export function fetchSelectedMonthRecords(inputDate: {
   start: Date,
   end: Date,
-}) {
+}, store: Store) {
   const data: Record[] = [];
-  const records = useAppSelector(store => store.records);
+  const { records } = store.getState();
   records.forEach(item => {
     if (recordInSelectedMonth(item, inputDate)) {
       data.push(item);
@@ -45,7 +44,7 @@ type InputRecords = {
   [id: string]: ComponentFramework.PropertyHelper.DataSetApi.EntityRecord;
 }
 
-export function fetchRecords(inputRecords: InputRecords) {
+export function fetchRecords(inputRecords: InputRecords, store: Store) {
   const data: Record[] = [];
   const schemaNames = store.getState().recordFieldSchemaNames;
   for (const ID in inputRecords) {
