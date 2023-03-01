@@ -10,10 +10,9 @@ import {
   getDaysOfSurroundingMonths,
 } from '../utilities/dateUtilities';
 import Tooltip from 'react-tooltip-lite';
-import { IViewOptions } from './ScheduleBoard';
 import { Header } from './Header';
 import { MonthNames, WeekDays } from '../utilities/enums';
-import { IDataverseService, IService, Store, SurroundingMonthsDate } from '../utilities/types';
+import { IDataverseService, Store, SurroundingMonthsDate, IViewOptions } from '../utilities/types';
 
 declare module 'react-tooltip-lite' {
   interface TooltipProps {
@@ -21,11 +20,12 @@ declare module 'react-tooltip-lite' {
   }
 }
 
-interface IMonthlyView extends IService<IDataverseService> {
+interface IMonthlyView {
   date: Date;
   setDate: (date: Date) => void;
   setView: (view: IViewOptions) => void;
   store: Store;
+  _service: IDataverseService;
 }
 
 export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {

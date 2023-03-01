@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { fetchSelectedMonthRecords } from '../store/services';
-import { IViewOptions } from './ScheduleBoard';
 import { Header } from './Header';
 import { getAbsoluteDate } from '../utilities/dateUtilities';
 import { DayHours } from '../utilities/enums';
 import Tooltip from 'react-tooltip-lite';
-import { IDataverseService, IService, Store } from '../utilities/types';
+import { IDataverseService, IViewOptions, Store } from '../utilities/types';
 
-interface IDailyView extends IService<IDataverseService> {
+interface IDailyView {
   date: Date;
   setDate: (date: Date) => void;
   setView: (view: IViewOptions) => void;
   store: Store;
+  _service: IDataverseService;
 }
 
 export const DailyView: React.FunctionComponent<IDailyView> = props => {

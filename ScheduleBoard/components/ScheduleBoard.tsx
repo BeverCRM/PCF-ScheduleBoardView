@@ -2,14 +2,14 @@ import * as React from 'react';
 import { DailyView } from './DailyView';
 import { MonthlyView } from './MonthlyView';
 import { Provider } from 'react-redux';
-import { IScheduleBoardProps } from '../utilities/types';
 import { BoardSpinner } from './Spinner';
+import { IDataverseService, IViewOptions, Store } from '../utilities/types';
 
-export interface IViewOptions {
-  monthly: boolean;
-  weekly: boolean;
-  daily: boolean;
-}
+interface IScheduleBoardProps {
+  currentDate: Date;
+  store: Store;
+  _service: IDataverseService;
+ }
 
 export const ScheduleBoard: React.FunctionComponent<IScheduleBoardProps> = props => {
   const { currentDate, _service, store } = props;
@@ -19,13 +19,11 @@ export const ScheduleBoard: React.FunctionComponent<IScheduleBoardProps> = props
     daily: false,
   };
 
-  // fetchRecords(records);
   const [date, setDate] = React.useState(currentDate);
   const [view, setView] = React.useState(defaultView);
 
   if (_service.isDatasetLoading()) {
-    return (
-      <BoardSpinner/>);
+    return <BoardSpinner/>;
   }
 
   if (view.daily === true) {

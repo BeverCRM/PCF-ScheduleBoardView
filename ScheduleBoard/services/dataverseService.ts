@@ -23,10 +23,6 @@ export class DataverseService implements IDataverseService {
     this._context.navigation.openForm(entityFormOptions);
   }
 
-  public getContext(): ComponentFramework.Context<IInputs> {
-    return this._context;
-  }
-
   public setSchemaNames(store: Store): void {
     const recordFieldSchemaNames = [
       this._context.parameters.name.raw,

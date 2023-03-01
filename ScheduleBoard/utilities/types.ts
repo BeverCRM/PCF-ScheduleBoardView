@@ -37,11 +37,8 @@ export interface IDataverseService {
   isDatasetLoading(): boolean;
 }
 
-export interface IService<T> {
-  _service: T;
-}
-
-export interface IScheduleBoardProps extends IService<IDataverseService> {
- currentDate: Date;
- store: Store;
+export interface IViewOptions {
+  monthly: boolean;
+  weekly: boolean;
+  daily: boolean;
 }
