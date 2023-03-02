@@ -11,3 +11,4 @@ jobs:
     with:
       control-title: Schedule Board View
       control-description: This control converts any dataset that has start date and end date in its records into Schedule Board.
+      control-tags: Dataset, Grid, Board
