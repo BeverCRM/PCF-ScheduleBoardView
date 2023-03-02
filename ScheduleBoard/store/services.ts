@@ -53,8 +53,8 @@ export function fetchRecords(inputRecords: InputRecords, store: Store) {
     const item: Record = {
       id: ID,
       name: <string>record.getValue(schemaNames.name),
-      start: new Date(<string>(record.getValue(schemaNames.startDate))).getTime(),
-      end: new Date(<string>(record.getValue(schemaNames.endDate))).getTime(),
+      start: new Date(<string>(record.getFormattedValue(schemaNames.startDate))).getTime(),
+      end: new Date(<string>(record.getFormattedValue(schemaNames.endDate))).getTime(),
       color,
       index: -1,
     };
