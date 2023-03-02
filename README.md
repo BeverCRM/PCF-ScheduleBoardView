@@ -2,7 +2,12 @@
 
 This control converts any dataset that has start date and end date in its records into Schedule Board.
 
-After changing the field type to “BeverControls.ScheduleBoardView” and setting all required properties
+After changing the field type to “BeverControls.ScheduleBoardView” and setting all required properties:
+
+- Name – Label of record on the board. (Required)
+- Start Date – Start DateTime of record on the board. (Required)
+- End Date - End DateTime of record on the board. (Required)
+- Color - Color of record on the board. (Optional)
 
 ![image](https://user-images.githubusercontent.com/61091700/222454624-a343922b-dcf7-42e3-8421-92928c12b0b4.png)
 
