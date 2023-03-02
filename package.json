@@ -1,7 +1,7 @@
 {
   "name": "pcf-schedule-board-view",
   "version": "1.0.0",
-  "description": "This control converts any dataset that has start date and end date in its records into Shedule Board.",
+  "description": "This control converts any dataset that has start date and end date in its records into Schedule Board.",
   "scripts": {
     "build": "pcf-scripts build",
     "clean": "pcf-scripts clean",

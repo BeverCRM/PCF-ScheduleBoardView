@@ -1,0 +1,14 @@
+name: Create release and upload solution to Azure blob storage CI
+
+on:
+  push:
+    branches: release
+
+jobs:
+  main:
+    uses: BeverCRM/Workflow-Build-Release-Upload-CI/.github/workflows/build-release-upload-ci.yml@master
+    secrets: inherit
+    with:
+      control-title: Schedule Board View
+      control-description: This control converts any dataset that has start date and end date in its records into Schedule Board.
+      control-tags: Dataset, Grid, Board
