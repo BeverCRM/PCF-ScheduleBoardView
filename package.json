@@ -31,7 +31,7 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
-    "eslint-plugin-react": "^7.31.10",
+    "eslint-plugin-react": "^7.29.3",
     "eslint-plugin-react-hooks": "^4.6.0",
     "pcf-scripts": "^1",
     "pcf-start": "^1",
