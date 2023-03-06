@@ -1,13 +1,15 @@
 # ScheduleBoardView
 
-This control converts any dataset that has start date and end date in its records into Schedule Board.
+This control converts dataset into schedule board view.
 
-After changing the field type to “BeverControls.ScheduleBoardView” and setting all required properties:
+![data](https://user-images.githubusercontent.com/61091700/223114744-87e2b6c2-ad90-4661-ad38-23f35e24f97c.jpg)
 
-- Name – Label of record on the board. (Required)
-- Start Date – Start DateTime of record on the board. (Required)
-- End Date - End DateTime of record on the board. (Required)
-- Color - Color of record on the board. (Optional)
+Control has the following properties:
+
+- **Name (Required)** – Label of record on the board. Dataset view should contain this column, in order to specify it in the properties.
+- **Start Date (Required)** – Start date and time of record on the board. Dataset view should contain this column, in order to specify it in the properties.
+- **End Date (Required)** – End date and time of record on the board. Dataset view should contain this column, in order to specify it in the properties.
+- **Color (Optional)** - Color of record on the board. Dataset view should contain this column, in order to specify it in the properties. Color field should be a text field with hexadecimal color value (e.g. ff00ff)
 
 ![image](https://user-images.githubusercontent.com/61091700/222454624-a343922b-dcf7-42e3-8421-92928c12b0b4.png)
 
