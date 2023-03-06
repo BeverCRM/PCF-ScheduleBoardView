@@ -20,9 +20,3 @@ Monthly view:
 
 Daily view:
 ![image](https://user-images.githubusercontent.com/61091700/222460195-0c0295c8-2265-44e9-a1a4-4e79a1b858ef.png)
-
-[![Download-Btn](https://user-images.githubusercontent.com/90428984/196970215-5355b724-6ebc-4457-995b-d3f4ebb450cf.png)](https://marketplace.bevercrm.com/pcf-controls/ScheduleBoardView)
-
-# Demo Schedule Board View PCF Control
-
-[![youtube-video](https://user-images.githubusercontent.com/61091700/223111823-17cb4649-a8a5-4dbd-a381-139f0309acf6.png)](https://www.youtube.com/watch?v=PD5IvVbYWBs)
