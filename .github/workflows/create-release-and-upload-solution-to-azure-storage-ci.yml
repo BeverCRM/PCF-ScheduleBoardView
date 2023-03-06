@@ -11,8 +11,8 @@ jobs:
     with:
       control-title: Schedule Board View
       control-description: This control converts any dataset that has start date and end date in its records into Schedule Board.
-      thumbnailUrl: https://user-images.githubusercontent.com/61091700/222457753-d6a2816d-99e0-4fe1-937b-be2d393c5977.png
-      primaryImageUrl: https://user-images.githubusercontent.com/61091700/222457753-d6a2816d-99e0-4fe1-937b-be2d393c5977.png
+      thumbnail-url: https://user-images.githubusercontent.com/61091700/222457753-d6a2816d-99e0-4fe1-937b-be2d393c5977.png
+      primary-image-url: https://user-images.githubusercontent.com/61091700/222457753-d6a2816d-99e0-4fe1-937b-be2d393c5977.png
       control-youtube-video-url: https://www.youtube.com/watch?v=PD5IvVbYWBs
       control-tags: Dataset, Grid, Board
       create-new-release: false
