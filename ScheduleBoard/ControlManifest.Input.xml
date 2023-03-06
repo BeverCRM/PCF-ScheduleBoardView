@@ -13,7 +13,6 @@
       <platform-library name="React" version="16.8.6" />
       <platform-library name="Fluent" version="8.29.0" />
       <!-- UNCOMMENT TO ADD MORE RESOURCES
-      <css path="css/BvrScheduleBoardViewControl.css" order="1" />
       <resx path="strings/BvrScheduleBoardViewControl.1033.resx" version="1.0.0" />
       -->
     </resources>
