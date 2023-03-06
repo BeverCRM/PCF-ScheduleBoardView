@@ -23,4 +23,4 @@ Daily view:
 
 # Demo Schedule Board View PCF Control
 
-[![youtube-video](![image](https://user-images.githubusercontent.com/61091700/223111294-4e15a254-bded-4352-bae5-4cf1f86cfc68.png)](https://www.youtube.com/watch?v=JrtwpTn3YC8)
+[![youtube-video](![image](https://user-images.githubusercontent.com/61091700/223111823-17cb4649-a8a5-4dbd-a381-139f0309acf6.png)](https://www.youtube.com/watch?v=JrtwpTn3YC8)
