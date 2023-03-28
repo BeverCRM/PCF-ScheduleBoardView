@@ -25,12 +25,10 @@ Daily view:
 <br>
 <br>
 
-<span type="ignore">
-
+<!-- <IGNORE> -->
 [![Download-Btn](https://user-images.githubusercontent.com/90428984/196970215-5355b724-6ebc-4457-995b-d3f4ebb450cf.png)](https://marketplace.bevercrm.com/pcf-controls/ScheduleBoardView)
 
 # Demo ScheduleBoardView PCF Control
 
 [![youtube-scheduleboard](https://user-images.githubusercontent.com/60586462/228231076-8513d8fa-efc5-43cb-ad73-41139146b343.png)](https://www.youtube.com/watch?v=PD5IvVbYWBs)
-
-</span>
+<!-- </IGNORE> -->
