@@ -26,7 +26,7 @@ Daily view:
 <br>
 
 <!-- <IGNORE> -->
-[![Download-Btn](https://user-images.githubusercontent.com/90428984/196970215-5355b724-6ebc-4457-995b-d3f4ebb450cf.png)](https://marketplace.bevercrm.com/pcf-controls/ScheduleBoardView)
+[![Download-Btn](https://user-images.githubusercontent.com/90428984/196970215-5355b724-6ebc-4457-995b-d3f4ebb450cf.png)](https://marketplace.bevercrm.com/pcf-controls/5)
 
 # Demo ScheduleBoardView PCF Control
 
