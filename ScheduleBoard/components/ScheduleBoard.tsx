@@ -9,35 +9,37 @@ interface IScheduleBoardProps {
   currentDate: Date;
   store: Store;
   _service: IDataverseService;
- }
+}
 
-export const ScheduleBoard: React.FunctionComponent<IScheduleBoardProps> = props => {
+const defaultView: IViewOptions = {
+  monthly: true,
+  weekly: false,
+  daily: false,
+};
+
+export const ScheduleBoard: React.FC<IScheduleBoardProps> = props => {
   const { currentDate, _service, store } = props;
-  const defaultView: IViewOptions = {
-    monthly: true,
-    weekly: false,
-    daily: false,
-  };
 
   const [date, setDate] = React.useState(currentDate);
   const [view, setView] = React.useState(defaultView);
 
   if (_service.isDatasetLoading()) {
-    return <BoardSpinner/>;
+    return <BoardSpinner />;
   }
 
-  if (view.daily === true) {
+  if (view.daily) {
     return (
       <Provider store={store}>
         <DailyView date={date} setDate={setDate} setView={setView}
-          _service={_service} store={store}/>
+          _service={_service} />
       </Provider>
     );
   }
+
   return (
     <Provider store={store}>
       <MonthlyView date={date} setDate={setDate} setView={setView}
-        _service={_service} store={store}/>
+        _service={_service} />
     </Provider>
   );
 };

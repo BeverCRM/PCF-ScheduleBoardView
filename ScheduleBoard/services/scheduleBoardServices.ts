@@ -1,28 +1,28 @@
 import { fetchSelectedMonthRecords } from '../store/services';
-import { CalendarDate, Record, Store } from '../utilities/types';
+import { CalendarDate, Booking } from '../utilities/types';
 import { getAbsoluteDate } from '../utilities/dateUtilities';
 
 export function getSelectedMonthBookings(
   calendarDays: CalendarDate[][],
-  store: Store,
-): Record[] {
+  records: Booking[],
+): Booking[] {
   const calendarRowMaxIndex = 6;
   const startDate = getAbsoluteDate(calendarDays[0][0].value, 'START');
   const endDate = getAbsoluteDate(
     calendarDays[calendarDays.length - 1][calendarRowMaxIndex].value, 'END');
-  const bookings = fetchSelectedMonthRecords({ start: startDate, end: endDate }, store);
+  const bookings = fetchSelectedMonthRecords({ start: startDate, end: endDate }, records);
   return bookings;
 }
 
 function prefillEmptySpaceWithBooking(
   item: CalendarDate,
-  currentDayBookings: Record[],
+  currentDayBookings: Booking[],
   topIndex: number) {
   const temporaryArray = [...item.bookings];
   let b = 0;
   for (let k = 0; k < topIndex; ++k) {
     if (item.bookings[b]?.index !== k) {
-      let record:Record;
+      let record:Booking;
       if (currentDayBookings.length !== 0) {
         record = currentDayBookings.shift()!;
       }
@@ -47,7 +47,7 @@ function prefillEmptySpaceWithBooking(
 
 function getAllBookingsFromPreviousDays(
   item: CalendarDate,
-  bookings: Record[],
+  bookings: Booking[],
   defaultBookingIndex: number,
   topIndex:number): number {
   for (const booking of bookings) {
@@ -69,8 +69,8 @@ function getAllBookingsFromPreviousDays(
 
 function getNewBookingsFromCurrentDay(
   item: CalendarDate,
-  bookings: Record[],
-  currentDayBookings: Record[],
+  bookings: Booking[],
+  currentDayBookings: Booking[],
   defaultBookingIndex: number,
   maxBookingsCount: number,
 ) {
@@ -91,17 +91,17 @@ function getNewBookingsFromCurrentDay(
 
 export function generateCalendarDates(
   combinedDates: CalendarDate[][],
-  _bookings: Record[],
+  _bookings: Booking[],
 ): CalendarDate[][] {
   const generatedDates: CalendarDate[][] = [...combinedDates];
   const defaultBookingIndex = -1;
-  const bookings: Record[] = _bookings.map(k => ({ ...k, index: defaultBookingIndex }));
+  const bookings: Booking[] = _bookings.map(k => ({ ...k, index: defaultBookingIndex }));
   let previousItem: CalendarDate | undefined;
   const maxBookingsCount = 6;
 
   generatedDates.forEach(week => {
     week.forEach(item => {
-      const currentDayBookings: Record[] = [];
+      const currentDayBookings: Booking[] = [];
       let topIndex = 0;
 
       topIndex = getAllBookingsFromPreviousDays(item, bookings, defaultBookingIndex, topIndex);

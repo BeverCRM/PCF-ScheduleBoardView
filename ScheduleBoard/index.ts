@@ -37,7 +37,7 @@ implements ComponentFramework.ReactControl<IInputs, IOutputs> {
   public updateView(context: ComponentFramework.Context<IInputs>): React.ReactElement {
 
     if (context.parameters.DataSet.paging !== null &&
-        context.parameters.DataSet.paging.hasNextPage === true) {
+        context.parameters.DataSet.paging.hasNextPage) {
       context.parameters.DataSet.paging.setPageSize(5000);
       context.parameters.DataSet.paging.loadNextPage();
     }

@@ -1,8 +1,8 @@
 import { getValidColor } from '../utilities/utilities';
 import { setRecords, setRecordFieldSchemaNames } from './store';
-import { Record, SchemaNames, Store } from '../utilities/types';
+import { Booking, SchemaNames, Store } from '../utilities/types';
 
-export function fetchRecordFieldSchemaNames(inputSchemaNames: Array<String | null>, store: Store) {
+export function fetchRecordFieldSchemaNames(inputSchemaNames: (string | null)[], store: Store) {
   const schemaNames: SchemaNames = {
     name: <string>inputSchemaNames[0],
     startDate: <string>inputSchemaNames[1],
@@ -14,7 +14,7 @@ export function fetchRecordFieldSchemaNames(inputSchemaNames: Array<String | nul
 }
 
 function recordInSelectedMonth(
-  item: Record,
+  item: Booking,
   inputDate: {
   start: Date,
   end: Date,
@@ -29,9 +29,8 @@ function recordInSelectedMonth(
 export function fetchSelectedMonthRecords(inputDate: {
   start: Date,
   end: Date,
-}, store: Store) {
-  const data: Record[] = [];
-  const { records } = store.getState();
+}, records: Booking[]) {
+  const data: Booking[] = [];
   records.forEach(item => {
     if (recordInSelectedMonth(item, inputDate)) {
       data.push(item);
@@ -45,12 +44,12 @@ type InputRecords = {
 }
 
 export function fetchRecords(inputRecords: InputRecords, store: Store) {
-  const data: Record[] = [];
+  const data: Booking[] = [];
   const schemaNames = store.getState().recordFieldSchemaNames;
   for (const ID in inputRecords) {
     const record = inputRecords[ID];
     const color = getValidColor(record, schemaNames);
-    const item: Record = {
+    const item: Booking = {
       id: ID,
       name: <string>record.getValue(schemaNames.name),
       start: new Date(<string>(record.getFormattedValue(schemaNames.startDate))).getTime(),
