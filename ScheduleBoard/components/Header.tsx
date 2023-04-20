@@ -10,13 +10,13 @@ interface IHeader {
     setView: (view: IViewOptions) => void;
     date: Date;
     buttonName: string;
-    currentButtonisDisabled: (date: Date) => boolean;
+    currentButtonIsDisabled: boolean;
     viewOptions: IViewOptions;
 }
 
-export const Header: React.FunctionComponent<IHeader> = props => {
+export const Header: React.FC<IHeader> = props => {
   const { setDate, changeSize, title, setView, date, buttonName,
-    currentButtonisDisabled, option, viewOptions } = props;
+    currentButtonIsDisabled, option, viewOptions } = props;
   let changeMonthOrDay: (direction: string, date: Date) => Date;
   switch (option) {
     case 'day': {
@@ -57,7 +57,7 @@ export const Header: React.FunctionComponent<IHeader> = props => {
               changeSize();
             }}
           >
-            <button disabled={currentButtonisDisabled(date)}>Today</button>
+            <button disabled={currentButtonIsDisabled}>Today</button>
           </span>
           <span className="bvrBoard_viewChange"
             style={ viewOptions.daily ? { display: 'none' }

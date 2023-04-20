@@ -4,29 +4,31 @@ import { Header } from './Header';
 import { getAbsoluteDate } from '../utilities/dateUtilities';
 import { DayHours } from '../utilities/enums';
 import Tooltip from 'react-tooltip-lite';
-import { IDataverseService, IViewOptions, Store } from '../utilities/types';
+import { IDataverseService, IViewOptions } from '../utilities/types';
+import { useAppSelector } from '../store/hooks';
 
 interface IDailyView {
   date: Date;
   setDate: (date: Date) => void;
   setView: (view: IViewOptions) => void;
-  store: Store;
   _service: IDataverseService;
 }
 
-export const DailyView: React.FunctionComponent<IDailyView> = props => {
-  const { date, setDate, setView, _service, store } = props;
+export const DailyView: React.FC<IDailyView> = props => {
+  const { date, setDate, setView, _service } = props;
   const verticalLinesRef = React.useRef<HTMLDivElement>(null);
   const calendarBodyRef = React.useRef<HTMLDivElement>(null);
+
+  const records = useAppSelector(state => state.records);
 
   const title = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 
   const start = getAbsoluteDate(date, 'START');
   const end = getAbsoluteDate(date, 'END');
 
-  const bookings = fetchSelectedMonthRecords({ start, end }, store);
+  const bookings = fetchSelectedMonthRecords({ start, end }, records);
 
-  function calculateBookingWidth(startDate: Date, endDate:Date): string {
+  function calculateBookingWidth(startDate: Date, endDate: Date): string {
     let startDateTime = 0;
     let endDateTime = 2400;
     if (startDate.getDate() === date.getDate() && startDate.getMonth() === date.getMonth()) {
@@ -45,13 +47,10 @@ export const DailyView: React.FunctionComponent<IDailyView> = props => {
     return '0%';
   }
 
-  function currentDayButtonIsDisabled(date: Date): boolean {
-    return (
-      date.getMonth() === new Date().getMonth() &&
-      date.getFullYear() === new Date().getFullYear() &&
-      date.getDate() === new Date().getDate()
-    );
-  }
+  const currentDayButtonIsDisabled =
+    date.getMonth() === new Date().getMonth() &&
+    date.getFullYear() === new Date().getFullYear() &&
+    date.getDate() === new Date().getDate();
 
   function changeSize() {
     setTimeout(() => {
@@ -60,12 +59,11 @@ export const DailyView: React.FunctionComponent<IDailyView> = props => {
       }
       if (verticalLinesRef.current?.style.height) {
         verticalLinesRef.current.style.height =
-      `${document.getElementById('bvrBoard_calendar-body')?.clientHeight}px`;
-        !document.getElementById('bvrBoard_calendar-body')?.style.maxHeight;
+          `${document.getElementById('bvrBoard_calendar-body')?.clientHeight}px`;
       }
       if (verticalLinesRef.current?.style.width) {
         verticalLinesRef.current.style.width =
-      `${document.getElementById('bvrBoard_calendar-body')?.clientWidth}px`;
+          `${document.getElementById('bvrBoard_calendar-body')?.clientWidth}px`;
       }
     }, 100);
   }
@@ -84,7 +82,7 @@ export const DailyView: React.FunctionComponent<IDailyView> = props => {
         <Header setDate={setDate} date={date} option={'day'} changeSize={changeSize}
           title={title} setView={setView}
           viewOptions={{ monthly: true, weekly: false, daily: false }}
-          buttonName={'Monthly View'} currentButtonisDisabled={currentDayButtonIsDisabled}
+          buttonName={'Monthly View'} currentButtonIsDisabled={currentDayButtonIsDisabled}
         />
         <div className="bvrBoard_calendar">
           <div className="bvrBoard_c_content">
@@ -98,7 +96,7 @@ export const DailyView: React.FunctionComponent<IDailyView> = props => {
             <div className="calendar-body" id='bvrBoard_calendar-body' ref={calendarBodyRef}
               style={{ maxHeight: `${window.innerHeight - 300}px` }}
             >
-              <div id='bvrBoard_verlicallines' ref={verticalLinesRef}
+              <div ref={verticalLinesRef}
                 style={
                   { position: 'absolute',
                     height: `0px`,

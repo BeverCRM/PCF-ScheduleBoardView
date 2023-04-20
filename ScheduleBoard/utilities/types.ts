@@ -9,10 +9,10 @@ export type CalendarDate = {
   value: Date;
   day: string;
   isTheItemOfTheSelectedMonth: boolean;
-  bookings: Record[];
+  bookings: Booking[];
 };
 
-export type Record = {
+export type Booking = {
   id: string;
   name: string;
   start: number;
@@ -27,7 +27,7 @@ export type Store =
 EnhancedStore<IState, AnyAction, [ThunkMiddleware<IState, AnyAction, undefined>]>;
 
 export interface IState {
-  records: Record[];
+  records: Booking[];
   recordFieldSchemaNames: SchemaNames;
 }
 

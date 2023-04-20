@@ -12,7 +12,8 @@ import {
 import Tooltip from 'react-tooltip-lite';
 import { Header } from './Header';
 import { MonthNames, WeekDays } from '../utilities/enums';
-import { IDataverseService, Store, SurroundingMonthsDate, IViewOptions } from '../utilities/types';
+import { IDataverseService, SurroundingMonthsDate, IViewOptions } from '../utilities/types';
+import { useAppSelector } from '../store/hooks';
 
 declare module 'react-tooltip-lite' {
   interface TooltipProps {
@@ -24,13 +25,15 @@ interface IMonthlyView {
   date: Date;
   setDate: (date: Date) => void;
   setView: (view: IViewOptions) => void;
-  store: Store;
   _service: IDataverseService;
 }
 
-export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {
-  const { date, setDate, setView, _service, store } = props;
+export const MonthlyView: React.FC<IMonthlyView> = props => {
+  const { date, setDate, setView, _service } = props;
   const calendarBodyRef = React.useRef<HTMLDivElement>(null);
+
+  const records = useAppSelector(state => state.records);
+
   const daysOfTheSelectedMonth: Date[] = getDaysOfSelectedMonth(
     date.getMonth(),
     date.getFullYear(),
@@ -47,17 +50,14 @@ export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {
     daysOfTheSurroundingMonths,
   );
 
-  const bookings = getSelectedMonthBookings(combinedDates, store);
+  const bookings = getSelectedMonthBookings(combinedDates, records);
   const days = generateCalendarDates(combinedDates, bookings);
 
   const title = `${MonthNames[date.getMonth()]} ${date.getFullYear()}`;
 
-  function currentMonthButtonIsDisabled(date: Date): boolean {
-    return (
-      date.getMonth() === new Date().getMonth() &&
-      date.getFullYear() === new Date().getFullYear()
-    );
-  }
+  const currentMonthButtonIsDisabled =
+    date.getMonth() === new Date().getMonth() &&
+    date.getFullYear() === new Date().getFullYear();
 
   function changeSize() {
     setTimeout(() => {
@@ -77,10 +77,10 @@ export const MonthlyView: React.FunctionComponent<IMonthlyView> = props => {
   return (
     <div className="bvrBoard_main">
       <div className="bvrBoard_scheduleBoard">
-        <Header setDate={setDate} date={date} option={'month'} changeSize={ () => null}
+        <Header setDate={setDate} date={date} option={'month'} changeSize={() => null}
           title={title} setView={setView}
           viewOptions={{ monthly: false, weekly: false, daily: true }}
-          buttonName={'Daily View'} currentButtonisDisabled={currentMonthButtonIsDisabled}
+          buttonName={'Daily View'} currentButtonIsDisabled={currentMonthButtonIsDisabled}
         />
         <div className="bvrBoard_calendar">
           <div className="bvrBoard_c_content">

@@ -1,4 +1,4 @@
-# ScheduleBoardView
+# Schedule Board View
 
 This control converts dataset into schedule board view.
 
