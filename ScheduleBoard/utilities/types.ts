@@ -17,6 +17,8 @@ export type Booking = {
   name: string;
   start: number;
   end: number;
+  formattedStart: string;
+  formattedEnd: string;
   color: string;
   index: number;
 };
