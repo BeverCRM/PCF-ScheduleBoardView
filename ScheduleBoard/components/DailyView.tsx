@@ -144,12 +144,8 @@ export const DailyView: React.FC<IDailyView> = props => {
                             content={
                               <ul style={{ listStyleType: 'none', padding: 0 }}>
                                 <li>{booking.name}</li>
-                                <li>{new Date(booking.start).toLocaleTimeString([],
-                                  { year: 'numeric', month: 'numeric', day: 'numeric',
-                                    hour: '2-digit', minute: '2-digit' })}</li>
-                                <li>{new Date(booking.end).toLocaleTimeString([],
-                                  { year: 'numeric', month: 'numeric', day: 'numeric',
-                                    hour: '2-digit', minute: '2-digit' })}</li>
+                                <li>{booking.formattedStart}</li>
+                                <li>{booking.formattedEnd}</li>
                               </ul>
                             }
                             background={booking.color}

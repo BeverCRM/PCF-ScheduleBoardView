@@ -43,7 +43,7 @@ implements ComponentFramework.ReactControl<IInputs, IOutputs> {
     }
     else {
       const { records } = context.parameters.DataSet;
-      fetchRecords(records, this._store);
+      fetchRecords(records, this._store, context);
     }
     return React.createElement(ScheduleBoard, { _service: this._dataverseService,
       store: this._store,
