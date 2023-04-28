@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="BeverControls" constructor="ScheduleBoardView" version="1.0.0" display-name-key="BeverControls.ScheduleBoardView" description-key="This control converts any dataset that has start date and end date in its records into Schedule Board" control-type="virtual">
+  <control namespace="BeverControls" constructor="ScheduleBoardView" version="1.0.1" display-name-key="BeverControls.ScheduleBoardView" description-key="This control converts any dataset that has start date and end date in its records into Schedule Board" control-type="virtual">
     <data-set name="DataSet" display-name-key="Records"  cds-data-set-options="displayViewSelector:true;displayQuickFind:true">
     </data-set>
     <property name='name' display-name-key='Name' description-key='Label of record on the board' of-type='SingleLine.Text' usage='input' required='true' />
