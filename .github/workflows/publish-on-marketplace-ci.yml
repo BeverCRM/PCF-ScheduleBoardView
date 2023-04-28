@@ -1,0 +1,14 @@
+name: Publish on Bever Marketplace CI
+
+on:
+  push:
+    branches: release
+
+jobs:
+  main:
+    uses: BeverCRM/Workflow-Build-Release-Upload-Update/.github/workflows/build-release-upload-update-rw.yml@master
+    secrets: inherit
+    with:
+      control-title: Schedule Board View
+      control-youtube-video-url: https://www.youtube.com/watch?v=PD5IvVbYWBs
+      control-tags: Dataset, Grid, Board
