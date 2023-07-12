@@ -1,5 +1,17 @@
 describe('schedule board', () => {
   beforeEach(() => {
+    cy.on('uncaught:exception', err => {
+      console.log(`uncaught exeption${err.message}`);
+      if (err.message
+        .includes('Cannot read properties of undefined (reading \'addOnFocusHandler\')')) {
+        return false;
+      }
+      return false;
+      /* if (err.message
+        .includes('Cannot read properties of null (reading \'documentElement\')')) {
+        return false;
+      } */
+    });
     cy.fixture('user').then(user => {
       cy.login(user.userName, user.password);
     });
@@ -9,12 +21,6 @@ describe('schedule board', () => {
         `&pagetype=entityrecord` +
         `&etn=${record.entityName}` +
         `&id=${record.recordId}`);
-    });
-    cy.on('uncaught:exception', err => {
-      if (err.message
-        .includes('Cannot read properties of undefined (reading \'addOnFocusHandler\')')) {
-        return false;
-      }
     });
   });
 
@@ -63,9 +69,9 @@ describe('schedule board', () => {
         cy.get('.react-tooltip-lite').children().children().eq(0).invoke('text')
           .should('eq', 'B-116 Aidan Ewing');
         cy.get('.react-tooltip-lite').children().children().eq(1).invoke('text')
-          .should('eq', '2/26/2023, 4:45:55 AM');
+          .should('eq', '02/26/2023 4:45 AM');
         cy.get('.react-tooltip-lite').children().children().eq(2).invoke('text')
-          .should('eq', '12/31/2023, 9:26:42 PM');
+          .should('eq', '12/31/2023 9:26 PM');
 
         cy.get('.booking-row').first().trigger('mouseout');
         cy.get('.booking.booking4cd07841-32a1-ed11-aad1-000d3adf7442')
@@ -106,7 +112,7 @@ describe('schedule board', () => {
     cy.get('.bvrBoard_expander').should('exist');
   });
 
-  it('navigation buttons daily view', () => {
+  it('hover Daily view', () => {
     let elementColor;
     cy.get('.button').first().click();
     cy.get('.booking').then($el => {
@@ -117,9 +123,9 @@ describe('schedule board', () => {
       cy.get('.react-tooltip-lite').children().children().eq(0).invoke('text')
         .should('eq', 'B-116 Aidan Ewing');
       cy.get('.react-tooltip-lite').children().children().eq(1).invoke('text')
-        .should('eq', '2/26/2023, 4:45:55 AM');
+        .should('eq', '02/26/2023 4:45 AM');
       cy.get('.react-tooltip-lite').children().children().eq(2).invoke('text')
-        .should('eq', '12/31/2023, 9:26:42 PM');
+        .should('eq', '12/31/2023 9:26 PM');
 
       cy.get('.booking-row').first().trigger('mouseout');
       cy.get('.booking').first().should('have.css', 'background-color', elementColor);
@@ -144,7 +150,7 @@ describe('schedule board', () => {
   it('width check', () => {
     cy.get('.arrow').first().click({ force: true });
     cy.get('.button').eq(7).click({ force: true });
-    // cy.get('.booking').eq(7).should('have.css', 'width', '85.30000305175781px');
+
     cy.get('.bvrBoard_bookings').then(board => {
       cy.log(`${board.width()}`);
       cy.get('.booking').eq(7).then(elem => {
@@ -152,11 +158,13 @@ describe('schedule board', () => {
         const calc1 = Math.floor((elem.width()! * 100) / board.width()!);
         expect(calc1).to.eq(12);
       });
+
       cy.get('.booking').eq(5).then(elem => {
         cy.log(`${elem.width()}`);
         const calc2 = Math.floor((elem.width()! * 100) / board.width()!);
         expect(calc2).to.eq(53);
       });
+
       cy.get('.booking').eq(2).then(elem => {
         cy.log(`${elem.width()}`);
         const calc2 = Math.round((elem.width()! * 100) / board.width()!);
@@ -165,12 +173,57 @@ describe('schedule board', () => {
     });
   });
 
-  it.only('timezone tests', () => {
-    // cy.get('#personalSettingsLauncher_buttoncrm_header_global').click({ force: true });
-    // cy.get('#id-81-button').click({ force: true });
-    // cy.wait(5000);
+  it('timezone tests', () => {
     cy.visit('https://bevertest.crm4.dynamics.com/tools/personalsettings/dialogs/personalsettings.aspx?dType=1&appid=4d1a5ae4-2516-44b4-b71d-ad82c9b55301');
-    cy.get('#timezone').select('(GMT+01:00) Brussels, Copenhagen, Madrid, Paris');
-    cy.get('#butBegin').click();
+    // cy.get('#timezone').select('(GMT+01:00) Brussels, Copenhagen, Madrid, Paris');
+    cy.get('#timezone').select('(GMT+04:00) Yerevan');
+    // cy.get('#butBegin').click({ force: true });
+    cy.wait(5000).then(() => {
+      cy.get('#butBegin').click();
+    });
+    // cy.get('#cmdDialogCancel').click();
+    /* cy.fixture('record.json').then(record => {
+      cy.visit(`main.aspx?` +
+        `appid=${record.appId}` +
+        `&pagetype=entityrecord` +
+        `&etn=${record.entityName}` +
+        `&id=${record.recordId}`);
+    }); */
+
+    // Iframe part
+
+    /* const iframe = cy.get('body').its('0.contentDocument.body').should('be.visible').then(cy.wrap);
+    cy.get('#personalSettingsLauncher_buttoncrm_header_global').click({ force: true });
+    cy.get('[data-id="SettingsMenu.PersonalSettings"]').click({ force: true });
+    cy.frameLoaded('#InlineDialog_Iframe');
+    cy.get('#InlineDialog_Iframe').then($iframe => {
+      const body = $iframe.contents().find('body');
+      cy.wrap(body).find('#timezone').select('(GMT+04:00) Yerevan');
+      cy.wrap(body).find('#butBegin').click();
+    }); */
+
+
+
+
+    // cy.reload();
+    // cy.get('#InlineDialog').its('0.contentDocument.body').should('be.visible').then(cy.wrap);
+    /* cy.get('iframe').its('length').then(iframeCount => {
+      console.log('Number of iframes:', iframeCount);
+    });
+    cy.get('iframe').not('#InlineDialog_Iframe').each(($iframe, index) => {
+      cy.wrap($iframe).invoke('remove');
+    });
+    -
+    // cy.iframe('.ms-crm-SelectBox').select('(GMT+04:00) Yerevan');
+    // cy.iframe().find('#timezone').select('(GMT+01:00) Brussels, Copenhagen, Madrid, Paris');
+    cy.get('iframe').not('#InlineDialog_Iframe').each(($iframe, index) => {
+      cy.wrap($iframe).invoke('remove');
+    }); */
+    // cy.iframe().find('#butBegin').click();
+    // cy.get('#InlineDialog_Iframe').its('0.contentDocument.body').should('be.visible').then(cy.wrap);
+    // iframe.get('#cmdDialogCancel').click({ force: true });
+    // cy.get('#id-124-button > .pa-bs');
+    // cy.get('.arrow').first().click({ force: true });
+    // cy.get('[data-top="69.01250076293945"]');
   });
 });

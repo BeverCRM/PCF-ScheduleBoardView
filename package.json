@@ -28,6 +28,7 @@
     "@typescript-eslint/parser": "^5.40.1",
     "chai-colors": "^1.0.1",
     "cypress": "^12.9.0",
+    "cypress-iframe": "^1.0.1",
     "eslint": "^7.32.0",
     "eslint-config-bever": "^1.0.3",
     "eslint-plugin-import": "^2.26.0",

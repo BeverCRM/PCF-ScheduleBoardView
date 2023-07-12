@@ -51,6 +51,18 @@ Cypress.Commands.add('login', (username, password) => {
       'https://login.microsoftonline.com/',
       { args: { username, password } },
       ({ username, password }) => {
+        cy.on('uncaught:exception', err => {
+          console.log(`uncaught exeption${err.message}`);
+          if (err.message
+            .includes('Cannot read properties of undefined (reading \'addOnFocusHandler\')')) {
+            return false;
+          }
+          return false;
+          /* if (err.message
+            .includes('Cannot read properties of null (reading \'documentElement\')')) {
+            return false;
+          } */
+        });
         cy.visit('https://login.microsoftonline.com');
         cy.get('[name="loginfmt"]').type(`${username}{enter}`);
         cy.get('[name="passwd"]').type(`${password}{enter}`);

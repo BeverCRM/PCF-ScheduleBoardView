@@ -5,6 +5,7 @@ export default defineConfig({
     baseUrl: 'https://bevertest.crm4.dynamics.com',
     experimentalModifyObstructiveThirdPartyCode: true,
     chromeWebSecurity: false,
-    defaultCommandTimeout: 16000,
+    defaultCommandTimeout: 10000,
+    // retries: { 'runMode': 1, 'openMode': 1 },
   },
 });
