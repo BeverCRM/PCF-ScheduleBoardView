@@ -1,4 +1,12 @@
 {
-  "userName": "developer@bevercrm.com",
-  "password": "Deva1z2Dev3!"
+  "user1" :
+  {
+    "userName": "developer@bevercrm.com",
+    "password": "Deva1z2Dev3!"
+  },
+  "user2" :
+  {
+    "userName": "developer2@bevercrm.com",
+    "password": "Deva1z2Dev3!"
+  }
 }

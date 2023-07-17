@@ -41,7 +41,8 @@
 declare namespace Cypress {
   interface Chainable {
     login(username: string, password: string): Chainable<void>,
-    getDateStringRepresentation(date : Date): Chainable<string>
+    getDateStringRepresentation(date : Date): Chainable<string>,
+    switchToJulyMonth(): Chainable<void>
   }
 }
 
@@ -74,12 +75,11 @@ Cypress.Commands.add('login', (username, password) => {
 Cypress.Commands.add('getDateStringRepresentation', date =>
   cy.wrap(`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`));
 
-/* Cypress.Commands.add('visit', () => {
-  cy.fixture('record.json').then(record => {
-    cy.visit(`main.aspx?` +
-      `appid=${record.appId}` +
-      `&pagetype=entityrecord` +
-      `&etn=${record.entityName}` +
-      `&id=${record.recordId}`);
+Cypress.Commands.add('switchToJulyMonth', () => {
+  cy.get('.period').invoke('text').then(text => {
+    if (text !== 'July 2023') {
+      cy.get('.arrow').first().click({ force: true });
+      cy.switchToJulyMonth();
+    }
   });
-}); */
+});

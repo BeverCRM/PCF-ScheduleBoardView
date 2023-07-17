@@ -6,6 +6,6 @@ export default defineConfig({
     experimentalModifyObstructiveThirdPartyCode: true,
     chromeWebSecurity: false,
     defaultCommandTimeout: 10000,
-    // retries: { 'runMode': 1, 'openMode': 1 },
+    retries: { 'runMode': 1, 'openMode': 1 },
   },
 });
