@@ -1,4 +1,13 @@
 {
-  "userName": "YOURUSERNAME",
-  "password": "YOURPASSWARD"
+  "user1":
+  {
+    "userName": "YOURUSERNAME",
+    "password": "YOURPASSWARD"
+  },
+
+  "user2":
+  {
+    "userName": "YOURUSERNAME",
+    "password": "YOURPASSWARD"
+  }
 }

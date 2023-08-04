@@ -27,11 +27,11 @@ describe('schedule board TimeZone', () => {
 
     cy.fixture('data').then(data => {
       cy.get('.react-tooltip-lite').children().children().eq(0).invoke('text')
-        .should('eq', data.data2.name);
+        .should('eq', data.booking2.name);
       cy.get('.react-tooltip-lite').children().children().eq(1).invoke('text')
-        .should('eq', data.data2.startDate);
+        .should('eq', data.booking2.startDate);
       cy.get('.react-tooltip-lite').children().children().eq(2).invoke('text')
-        .should('eq', data.data2.endDate);
+        .should('eq', data.booking2.endDate);
     });
   });
 });

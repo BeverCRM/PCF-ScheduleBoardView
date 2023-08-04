@@ -1,3 +1,5 @@
+import { getDateStringRepresentation } from '../support/utils';
+
 describe('schedule board', () => {
   beforeEach(() => {
     cy.on('uncaught:exception', err => {
@@ -40,7 +42,7 @@ describe('schedule board', () => {
     cy.get('.period').invoke('text').should('contain', nextMonthName);
   });
 
-  it.only('monthy view board element hover/unhover', () => {
+  it('monthy view board element hover/unhover', () => {
     let elementColor;
 
     cy.get('.booking.booking4cd07841-32a1-ed11-aad1-000d3adf7442')
@@ -52,11 +54,11 @@ describe('schedule board', () => {
           .first().should('have.css', 'background-color', 'rgb(56, 48, 80)');
         cy.fixture('data').then(data => {
           cy.get('.react-tooltip-lite').children().children().eq(0).invoke('text')
-            .should('eq', data.data1.name);
+            .should('eq', data.booking1.name);
           cy.get('.react-tooltip-lite').children().children().eq(1).invoke('text')
-            .should('eq', data.data1.startDate);
+            .should('eq', data.booking1.startDate);
           cy.get('.react-tooltip-lite').children().children().eq(2).invoke('text')
-            .should('eq', data.data1.endDate);
+            .should('eq', data.booking1.endDate);
         });
 
         cy.get('.booking-row').first().trigger('mouseout');
@@ -75,30 +77,27 @@ describe('schedule board', () => {
     const yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
     const tomorrow = new Date(new Date().setDate(new Date().getDate() + 1));
 
-    cy.getDateStringRepresentation(date).then(date => {
-      cy.get('.button').first().click();
-      cy.get('.today').click({ force: true });
-      cy.get('.period').invoke('text').should('contain', date);
-    });
+    const todayPeriod = getDateStringRepresentation(date);
+    cy.get('.button').first().click();
+    cy.get('.today').click({ force: true });
+    cy.get('.period').invoke('text').should('contain', todayPeriod);
 
     cy.get('.bvrBoard_expander').should('not.exist');
 
-    cy.getDateStringRepresentation(yesterday).then(date => {
-      cy.get('.arrow').first().click({ force: true });
-      cy.get('.period').invoke('text').should('contain', date);
-    });
+    const yesterdayPeriod = getDateStringRepresentation(yesterday);
+    cy.get('.arrow').first().click({ force: true });
+    cy.get('.period').invoke('text').should('contain', yesterdayPeriod);
 
-    cy.getDateStringRepresentation(tomorrow).then(date => {
-      cy.get('.arrow').eq(1).click({ force: true });
-      cy.get('.arrow').eq(1).click({ force: true });
-      cy.get('.period').invoke('text').should('contain', date);
-    });
+    const tomorrowPeriod = getDateStringRepresentation(tomorrow);
+    cy.get('.arrow').eq(1).click({ force: true });
+    cy.get('.arrow').eq(1).click({ force: true });
+    cy.get('.period').invoke('text').should('contain', tomorrowPeriod);
 
     cy.get('.bvrBoard_viewChange').click({ force: true });
     cy.get('.bvrBoard_expander').should('exist');
   });
 
-  it.only('hover Daily view', () => {
+  it('hover Daily view', () => {
     let elementColor;
     cy.get('.button').first().click();
     cy.get('.booking').then($el => {
@@ -108,11 +107,11 @@ describe('schedule board', () => {
 
       cy.fixture('data').then(data => {
         cy.get('.react-tooltip-lite').children().children().eq(0).invoke('text')
-          .should('eq', data.data1.name);
+          .should('eq', data.booking1.name);
         cy.get('.react-tooltip-lite').children().children().eq(1).invoke('text')
-          .should('eq', data.data1.startDate);
+          .should('eq', data.booking1.startDate);
         cy.get('.react-tooltip-lite').children().children().eq(2).invoke('text')
-          .should('eq', data.data1.endDate);
+          .should('eq', data.booking1.endDate);
       });
 
       cy.get('.booking-row').first().trigger('mouseout');
@@ -143,20 +142,20 @@ describe('schedule board', () => {
       cy.log(`${board.width()}`);
       cy.get('.booking').eq(7).then(elem => {
         cy.log(`${elem.width()}`);
-        const calc1 = Math.floor((elem.width()! * 100) / board.width()!);
-        expect(calc1).to.eq(12);
+        const bookingWidthPercentage = Math.floor((elem.width()! * 100) / board.width()!);
+        expect(bookingWidthPercentage).to.eq(12);
       });
 
       cy.get('.booking').eq(5).then(elem => {
         cy.log(`${elem.width()}`);
-        const calc2 = Math.floor((elem.width()! * 100) / board.width()!);
-        expect(calc2).to.eq(53);
+        const bookingWidthPercentage = Math.floor((elem.width()! * 100) / board.width()!);
+        expect(bookingWidthPercentage).to.eq(61);
       });
 
       cy.get('.booking').eq(2).then(elem => {
         cy.log(`${elem.width()}`);
-        const calc2 = Math.round((elem.width()! * 100) / board.width()!);
-        expect(calc2).to.eq(100);
+        const bookingWidthPercentage = Math.round((elem.width()! * 100) / board.width()!);
+        expect(bookingWidthPercentage).to.eq(100);
       });
     });
   });

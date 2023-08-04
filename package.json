@@ -26,7 +26,6 @@
     "@types/react-dom": "^18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.40.1",
     "@typescript-eslint/parser": "^5.40.1",
-    "chai-colors": "^1.0.1",
     "cypress": "^12.9.0",
     "eslint": "^7.32.0",
     "eslint-config-bever": "^1.0.3",
